@@ -1,0 +1,37 @@
+:root {
+   --maincolor:black;
+   --subcolor:white;
+   --accentcolor:cyan;
+   --trimcolor:teal; 
+}
+
+body {
+    color: var(--maincolor);
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.mainSection {
+    background-color: var(--subcolor);
+    display: flex;
+    flex: content;
+}
+
+.travelFormBox {
+    display: flex;
+    flex: content;
+}
+
+.travelForm {
+    display: flex;
+    margin-left: 2ch;
+}
+
+.mainSection h1, .mainSection p,  {
+    text-align: center;
+}
+
+#googleMap {
+    width: 50vw;
+    height: 40vh;
+}
+
