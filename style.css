@@ -6,32 +6,68 @@
 }
 
 body {
+   
     color: var(--maincolor);
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
+h2 {
+    
+}
+
+main {
+    width:  90%;
+    max-width: 2560px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 100vh;
+}
+
 .mainSection {
-    background-color: var(--subcolor);
     display: flex;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.containerMd, .containerLg {
+    background-color: var(--subcolor);
     flex: content;
+    justify-content: center;
+    text-align: center;
+}
+
+.containerMd {
+    width: 1.1fr;
+}
+
+.containerLg {
+    width: 1.5fr;
+}
+
+
+.icon {
+    margin-right: 1rem;
 }
 
 .travelFormBox {
-    display: flex;
-    flex: content;
+    display: block;
 }
 
 .travelForm {
     display: flex;
-    margin-left: 2ch;
+    margin: 1rem;
 }
 
-.mainSection h1, .mainSection p,  {
-    text-align: center;
+#formBtn {
 }
 
 #googleMap {
-    width: 50vw;
+    width: 40vw;
     height: 40vh;
+    margin: 2rem;
+}
+
+#recommendedModal {
+    position: absolute;
 }
 
