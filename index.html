@@ -12,32 +12,91 @@
 <body>
     <main>
         <section class="mainSection">
-            <div class="container-fluid">
-                <h1>Travel Distance</h1>
-                <p>Use me to find the distance between two places.</p>
-                <form class="travelFormBox">
-                    <div class="travelForm">
-                        <label for="from" class="col-xs-2 control-label"><i class="fa-solid fa-location-crosshairs"></i>  </label>
-                        <div class="col-xs-4">
-                            <input type="text" id="form" placeholder="Origin" class="formControl">
-                        </div>
+        <div class="containerMd">
+            <h2>Travel Distance</h2>
+            <p>Use me to find the distance between two places.</p>
+            <form class="travelFormBox">
+                <div class="travelForm">
+                    <label for="from" class="icon"><i class="fa-sharp fa-solid fa-location-dot"></i></label>
+                    <div class="col-xs-4">
+                        <input type="text" id="from" placeholder="Origin" class="formControl">
                     </div>
-                    <div class="travelForm">
-                        <label for="to" class="col-xs-2 control-label"><i class="fa-sharp fa-solid fa-location-dot"></i></label>
-                        <div class="col-xs-4">
-                            <input type="text" id="to" placeholder="Destination" class="formControl">
-                        </div>
-                    </div>
-                </form>
-                    <div class="col-xs-offset-2 col-xs-10">
-                        <button class="btn btn-info btn-lg"><i class="fa-sharp fa-solid fa-diamond-turn-right"></i></button>
-                    </div>
-                <div class="container-fluid">
-                    <div id="googleMap"></div>
-                    <div id="output"></div>
                 </div>
+                <div class="travelForm">
+                    <label for="to" class="icon"><i class="fa-sharp fa-solid fa-location-dot"></i></label>
+                    <div class="col-xs-4">
+                        <input type="text" id="to" placeholder="Destination" class="formControl">
+                    </div>
+                </div>
+                <select id="mode">
+                    <option value="DRIVING">Driving</option>
+                    <option value="WALKING">Walking</option>
+                    <option value="BICYCLING">Cycling</option>
+                    <option value="TRANSIT">Train</option>
+                </select>
+                    <button id="formBtn"><i class="fa-sharp fa-solid fa-diamond-turn-right"></i></button>                   
+            </form>
+            <div class="recommendedCard">
+            <h2>No plans?</h2>
+            <select id="recommendOptions">
+                <option value="airport">airport</option>
+                <option value="amusement_park">amusement_park</option>
+                <option value="aquarium">aquarium</option>
+                <option value="art_gallery">art_gallery</option>
+                <option value="atm">atm</option>
+                <option value="bakery">bakery</option>
+                <option value="bus_station">bus_station</option>
+                <option value="cafe">cafe</option>
+                <option value="campground">campground</option>
+                <option value="car_rental">car_rental</option>
+                <option value="casino">casino</option>
+                <option value="church">church</option>
+                <option value="convenience_store">convenience_store</option>
+                <option value="department_store">department_store</option>
+                <option value="drugstore">drugstore</option>
+                <option value="gas_station">gas_station</option>
+                <option value="gym">gym</option>
+                <option value="hospital">hospital</option>
+                <option value="jewelry_store">jewelry_store</option>
+                <option value="library">library</option>
+                <option value="light_rail_station">light_rail_station</option>
+                <option value="liquor_store">liquor_store</option>
+                <option value="lodging">lodging</option>
+                <option value="movie_theater">movie_theater</option>
+                <option value="museum">museum</option>
+                <option value="park">park</option>
+                <option value="parking">parking</option>
+                <option value="restaurant">restaurant</option>
+                <option value="spa">spa</option>
+                <option value="stadium">stadium</option>
+                <option value="taxi_stand">taxi_stand</option>
+                <option value="tourist_attraction">tourist_attraction</option>
+                <option value="train_station">train_station</option>
+                <option value="transit_station">transit_station</option>
+                <option value="travel_agency">travel_agency</option>
+                <option value="zoo">zoo</option>
+            </select>
             </div>
+        </div>
+        <div class="containerLg">
+            <h1>Travel the World!</h1>
+            <p>Trip time calculator</p>
+            <div id="googleMap"></div>
+            <div id="output"></div>
+        </div>
+        <div class="containerMd">
+            <h2>Estimated Time Spent</h2>
+                <ul id="timeSpentUL">
+                <li>filler</li>
+                <li>filler</li>
+                <li>filler</li>
+                <li>filler</li>
+                </ul>
+        </div>
         </section>
+        <div class="containerLg" id="recommendedModal">
+            <table class="table" id="places"></table>
+        </div>
     </main>
 
 
@@ -51,7 +110,8 @@
     src="https://code.jquery.com/jquery-3.6.4.js"
     integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
     crossorigin="anonymous"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7LSZB-NbGaXCie1yVVi5ptF0Mta50NvA"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7LSZB-NbGaXCie1yVVi5ptF0Mta50NvA&callback=initMap"></script>
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7LSZB-NbGaXCie1yVVi5ptF0Mta50NvA&libraries=places"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <script src="scripts.js"></script>
 </body>
