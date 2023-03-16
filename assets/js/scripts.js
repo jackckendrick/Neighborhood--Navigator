@@ -1,5 +1,6 @@
 // ~~~ Map Start ~~~ //
 
+var destinationListEl = $('#timeSpentUl')
 var formBtn = document.getElementById('formBtn');
 const directionsService = new google.maps.DirectionsService();
 const directionsRenderer = new google.maps.DirectionsRenderer();
@@ -7,9 +8,9 @@ const directionsRenderer = new google.maps.DirectionsRenderer();
 // Creates the map function, fragile do not touch //
 function initMap() {
   const map = new google.maps.Map(document.getElementById("googleMap"), {
-  zoom: 4,
-  center: {lat: 40.116386, lng: -101.299591},
-  mapTypeId: google.maps.MapTypeId.ROADMAP
+    zoom: 4,
+    center: {lat: 40.116386, lng: -101.299591},
+    mapTypeId: google.maps.MapTypeId.ROADMAP
   });
   directionsRenderer.setMap(map);
   // Updates the mode of transport //
@@ -64,48 +65,56 @@ const autocomplete2 = new google.maps.places.Autocomplete(input2, autocompleteOp
 
 // Adds destination address to unordered list
 function handleFormSubmit(event) {
-  var destinationListEl = $('#timeSpentUl')
-
+  
   var destinationTo = $('input[name="GoingTo"]').val();
-
+  
   if (!destinationTo) {
     console.log('No destination specified');
     return;
   }
-
+  
   var destinationListBoxEl = $(
     '<li class="flex-row justify-space-between align-center p-2 bg-light text-dark">'
-  );
-  destinationListBoxEl.text(destinationTo);
-
-  // add delete button to remove destination from list
-  destinationListBoxEl.append(
-    '<button class="btn btn-danger btn-small delete-item-btn">Remove</button>'
-);
-  // print to the page
-  destinationListEl.append(destinationListBoxEl);
-
-  // clear the form input element
-  // $('input[name="shopping-input"]').val('');
-}
-// forrmBtn.on('click', handleFormSubmit);
-
-
-// ~~~ Map End ~~~ Recommended Start ~~~ Experimental //
-
-// autocomplete2.addListener('place_changed', searchNearbyPlaces);
-
-// document.getElementById('recommendOptions').onchange = searchNearbyPlaces
-
-// function searchNearbyPlaces() {
-  //   document.getElementById('places').innerHTML = ''
-  //   // Get the place details from the autocomplete object.
-  //   var place = autocomplete2.getPlace();
-  //   console.log(place)
-  
-  //   // Create a map centered at the location entered in the autocomplete field.
-//   map = new google.maps.Map(document.getElementById('googleMap'), {
-//     center: place.geometry.location,
+    );
+    destinationListBoxEl.text(destinationTo);
+    
+    // add delete button to remove destination from list
+    destinationListBoxEl.append(
+      '<button class="btn btn-danger btn-small delete-item-btn">Remove</button>'
+      );
+      // print to the page
+      destinationListEl.append(destinationListBoxEl);
+      
+    }
+    
+    function handleRemoveItem(event) {
+      // convert button we pressed (`event.target`) to a jQuery DOM object
+      var removeBtnClicked = $(event.target);
+      
+      // get the parent `<li>` element from the button we pressed and remove it
+      removeBtnClicked.parent('li').remove();
+    }
+    
+    // use event delegation on the `destinationListEL` to listen for click on any element with a class of `delete-item-btn`
+    destinationListEl.on('click', '.delete-item-btn', handleRemoveItem);
+    
+    
+    
+    // ~~~ Map End ~~~ Recommended Start ~~~ Experimental //
+    
+    // autocomplete2.addListener('place_changed', searchNearbyPlaces);
+    
+    // document.getElementById('recommendOptions').onchange = searchNearbyPlaces
+    
+    // function searchNearbyPlaces() {
+      //   document.getElementById('places').innerHTML = ''
+      //   // Get the place details from the autocomplete object.
+      //   var place = autocomplete2.getPlace();
+      //   console.log(place)
+      
+      //   // Create a map centered at the location entered in the autocomplete field.
+      //   map = new google.maps.Map(document.getElementById('googleMap'), {
+        //     center: place.geometry.location,
 //     zoom: 15
 //   });
   
