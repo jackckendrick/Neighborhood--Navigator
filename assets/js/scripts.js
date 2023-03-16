@@ -21,32 +21,32 @@ function initMap() {
   document.getElementById("formBtn").addEventListener("click", function(event){
     event.preventDefault();
     calcRoute(directionsService, directionsRenderer);
+    handleFormSubmit();
   });
 }
 
 
-
-  // Calculates and display travel distance and time, fragile do not touch//
-  function calcRoute(directionsService, directionsRenderer) {
-    let selectedMode = document.getElementById("mode").value;
-    let request = {
-      origin: document.getElementById('from').value,
-      destination: document.getElementById('to').value,
-      travelMode: google.maps.TravelMode[selectedMode],
-      unitSystem: google.maps.UnitSystem.IMPERIAL
-    }
-    directionsService.route(request, (result, status) => {
-      if (status == google.maps.DirectionsStatus.OK) {
-        const output = document.querySelector('#output')
-        output.innerHTML = "<div> From: " + document.getElementById('from').value + ".<br /> To: " + document.getElementById('to').value + ". <br /> Driving Distance " + result.routes[0].legs[0].distance.text + ".<br /> Duration " + result.routes[0].legs[0].duration.text + ". </div>";
-        directionsRenderer.setDirections(result);
-      } else {
-        directionsRenderer.setDirections({routes: []});
-        map.setCenter(center);
-        output.innerHTML = "<p>Can't drive there mate.</p>"
-      }
-    });
+// Calculates and display travel distance and time, fragile do not touch//
+function calcRoute(directionsService, directionsRenderer) {
+  let selectedMode = document.getElementById("mode").value;
+  let request = {
+    origin: document.getElementById('from').value,
+    destination: document.getElementById('to').value,
+    travelMode: google.maps.TravelMode[selectedMode],
+    unitSystem: google.maps.UnitSystem.IMPERIAL
   }
+  directionsService.route(request, (result, status) => {
+    if (status == google.maps.DirectionsStatus.OK) {
+      const output = document.querySelector('#output')
+      output.innerHTML = "<div> From: " + document.getElementById('from').value + ".<br /> To: " + document.getElementById('to').value + ". <br /> Driving Distance " + result.routes[0].legs[0].distance.text + ".<br /> Duration " + result.routes[0].legs[0].duration.text + ". </div>";
+      directionsRenderer.setDirections(result);
+    } else {
+      directionsRenderer.setDirections({routes: []});
+      map.setCenter(center);
+      output.innerHTML = "<p>Can't drive there mate.</p>"
+    }
+  });
+}
 
 // Auto Fill //
 const input1 = document.getElementById('from');
@@ -62,6 +62,35 @@ const autocomplete1 = new google.maps.places.Autocomplete(input1, autocompleteOp
 const autocomplete2 = new google.maps.places.Autocomplete(input2, autocompleteOptions);
 
 
+// Adds destination address to unordered list
+function handleFormSubmit(event) {
+  var destinationListEl = $('#timeSpentUl')
+
+  var destinationTo = $('input[name="GoingTo"]').val();
+
+  if (!destinationTo) {
+    console.log('No destination specified');
+    return;
+  }
+
+  var destinationListBoxEl = $(
+    '<li class="flex-row justify-space-between align-center p-2 bg-light text-dark">'
+  );
+  destinationListBoxEl.text(destinationTo);
+
+  // add delete button to remove destination from list
+  destinationListBoxEl.append(
+    '<button class="btn btn-danger btn-small delete-item-btn">Remove</button>'
+);
+  // print to the page
+  destinationListEl.append(destinationListBoxEl);
+
+  // clear the form input element
+  // $('input[name="shopping-input"]').val('');
+}
+// forrmBtn.on('click', handleFormSubmit);
+
+
 // ~~~ Map End ~~~ Recommended Start ~~~ Experimental //
 
 // autocomplete2.addListener('place_changed', searchNearbyPlaces);
@@ -69,12 +98,12 @@ const autocomplete2 = new google.maps.places.Autocomplete(input2, autocompleteOp
 // document.getElementById('recommendOptions').onchange = searchNearbyPlaces
 
 // function searchNearbyPlaces() {
-//   document.getElementById('places').innerHTML = ''
-//   // Get the place details from the autocomplete object.
-//   var place = autocomplete2.getPlace();
-//   console.log(place)
-
-//   // Create a map centered at the location entered in the autocomplete field.
+  //   document.getElementById('places').innerHTML = ''
+  //   // Get the place details from the autocomplete object.
+  //   var place = autocomplete2.getPlace();
+  //   console.log(place)
+  
+  //   // Create a map centered at the location entered in the autocomplete field.
 //   map = new google.maps.Map(document.getElementById('googleMap'), {
 //     center: place.geometry.location,
 //     zoom: 15
