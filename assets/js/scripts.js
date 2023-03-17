@@ -75,19 +75,26 @@ nearbyBtn.addEventListener('click', nearbySearch);
 
 // Broken Search Nearby //
 function nearbySearch(){
-  axios.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json', {
-    params:{
-      location: lastCoordinates,
-      radius: 500,
-      key:'AIzaSyD7LSZB-NbGaXCie1yVVi5ptF0Mta50NvA'
-    }
+  // axios.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json', {
+  //   params:{
+  //     location: lastCoordinates,
+  //     radius: 500,
+  //     key:'AIzaSyD7LSZB-NbGaXCie1yVVi5ptF0Mta50NvA'
+  //   }
+  // })
+
+  // .then(function(response){
+  //   console.log(response);
+  // })
+  // .catch(function(error){
+  //   console.log(error);
+  // })
+  fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=29.3013479,-94.7976958&radius=500&key=AIzaSyD7LSZB-NbGaXCie1yVVi5ptF0Mta50NvA')
+  .then( res => {
+    return res.json()
   })
-  .then(function(response){
-    console.log(response);
-  })
-  .catch(function(error){
-    console.log(error);
-  })
+  .then(data => console.log(data))
+  .catch(error => console.log(error))
 }
 
 
