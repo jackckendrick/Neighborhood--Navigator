@@ -1,6 +1,7 @@
 let tripDuration // Trip duration global var
 let lastAddress // Trip last address
 let lastCoordinates // Trip last coordinates
+let globalMap
 // ~~~ Map Start ~~~ //
 
 var destinationListEl = $('#timeSpentUl')
@@ -15,6 +16,7 @@ function initMap() {
     center: {lat: 40.116386, lng: -101.299591},
     mapTypeId: google.maps.MapTypeId.ROADMAP
   });
+  globalMap = map
 
   directionsRenderer.setMap(map);
   
@@ -23,7 +25,6 @@ function initMap() {
     event.preventDefault();
     calcRoute(directionsService, directionsRenderer);
     handleFormSubmit();
-    geocode();
   });
   
 }
@@ -44,6 +45,7 @@ function calcRoute(directionsService, directionsRenderer) {
       tripDuration = result.routes[0].legs[0].duration.text;
       endAddress = result.routes[0].legs[0].end_address;
       lastAddress = endAddress;
+      geocode();
     } else {
       directionsRenderer.setDirections({routes: []});
       map.setCenter(center);
@@ -53,21 +55,22 @@ function calcRoute(directionsService, directionsRenderer) {
 }
 
 //  Gets Geocode information //
-function geocode(){
-  axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
-    params:{
-      address: lastAddress,
-      key:'AIzaSyD7LSZB-NbGaXCie1yVVi5ptF0Mta50NvA'
+function geocode() {
+  geocoder = new google.maps.Geocoder();
+  geocoder.geocode( { 'address': lastAddress}, function(results, status) {
+    if (status == 'OK') {
+
+      let lng = results[0].geometry.location.lng();
+      let lat = results[0].geometry.location.lat();
+      lastCoordinates = {
+        lat: lat,
+        lng: lng
+      }
+      
+    } else {
+      alert('Geocode was not successful for the following reason: ' + status);
     }
-  })
-  .then(function(response){
-    console.log(response);
-    endAddress = response.data.results[0].geometry.location;
-    lastCoordinates = endAddress.lat + "," + endAddress.lng;
-  })
-  .catch(function(error){
-    console.log(error);
-  })
+  });
 }
 
 nearbyBtn = document.getElementById('nearbyBtn');
@@ -75,26 +78,23 @@ nearbyBtn.addEventListener('click', nearbySearch);
 
 // Broken Search Nearby //
 function nearbySearch(){
-  // axios.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json', {
-  //   params:{
-  //     location: lastCoordinates,
-  //     radius: 500,
-  //     key:'AIzaSyD7LSZB-NbGaXCie1yVVi5ptF0Mta50NvA'
-  //   }
-  // })
+  var prevLocation = new google.maps.LatLng(lastCoordinates.lat, lastCoordinates.lng);
 
-  // .then(function(response){
-  //   console.log(response);
-  // })
-  // .catch(function(error){
-  //   console.log(error);
-  // })
-  fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=29.3013479,-94.7976958&radius=500&key=AIzaSyD7LSZB-NbGaXCie1yVVi5ptF0Mta50NvA')
-  .then( res => {
-    return res.json()
-  })
-  .then(data => console.log(data))
-  .catch(error => console.log(error))
+let typeSelection = document.getElementById('recommendOptions').selectedOptions[0].value;
+
+  var request = {
+    location: prevLocation,
+    radius: '1500',
+    type: [typeSelection]
+  };
+
+  service = new google.maps.places.PlacesService(globalMap);
+  service.nearbySearch(request, callback);
+}
+
+function callback(results, status) {
+  console.log(results);
+  console.log(status);
 }
 
 
@@ -115,8 +115,6 @@ const autocomplete2 = new google.maps.places.Autocomplete(input2, autocompleteOp
 
 let timeList = document.getElementById('timeAssumed');
 let combiTime = tripDuration + timeList.value;
-console.log(timeList.value);
-timeList.addEventListener('changed', console.log(timeList.value))
 
 
 
