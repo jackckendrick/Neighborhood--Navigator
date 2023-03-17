@@ -8,6 +8,7 @@
 body {
    
     color: var(--maincolor);
+    background-color: url("../assets/images/iguazu.jpg");
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
