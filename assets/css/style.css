@@ -1,8 +1,8 @@
 :root {
-   --maincolor:black;
-   --subcolor:white;
+   --maincolor:white;
+   --subcolor:teal;
    --accentcolor:cyan;
-   --trimcolor:teal; 
+   --trimcolor:blue; 
 }
 
 body {
