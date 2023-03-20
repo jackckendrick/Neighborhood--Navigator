@@ -6,31 +6,49 @@
 // Direct GeoCoding
 // http://api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}
 
-var formBtn = document.getElementById('formBtn');
+var formBtn = document.querySelector('.travelFormBox');
 var inputValue = document.getElementById('to');
-var temp = document.getElementById('temp');
+var currentTemp = document.getElementById('temp');
+var weatherDescription = document.getElementById('description')
 
 document.addEventListener('DOMContentLoaded', function(){
 
-    function getWeather() {
-        // 'inputValue.value' refers to the users destination input. Need to replace this and generate a Geo coordinate function.
-        var weatherApiUrl = 'https://api.openweathermap.org/data/2.5/forecast?q='+inputValue.value+'&appid=5c244caed3676cc031bf4ddf617d7c3d';
-    
-        // calls weather API
-        fetch (weatherApiUrl)
-    
-        // Then this instructs to give response in JSON format
+    function getWeather(event) {
+        event.preventDefault()
+
+        var geoCode = 'https://api.openweathermap.org/geo/1.0/direct?q='+inputValue.value+'&limit=1&appid=5c244caed3676cc031bf4ddf617d7c3d';
+        fetch (geoCode)
+        .then (function(response) {
+            return response.json();
+
+        })
+
+        .then(function(data) {
+            var lat = data[0]['lat'];
+            var lon = data[0]["lon"];
+
+            console.log(data)
+            var weatherApiUrl = 'https://api.openweathermap.org/data/2.5/weather?lat='+lat+'&lon='+lon+'&appid=5c244caed3676cc031bf4ddf617d7c3d&units=imperial';
+        
+        
+        return fetch (weatherApiUrl); 
+                
+        })
+
         .then (function (response) {
             return response.json();
+            
         })
-        
+
         // This grabs the specific data we went to display
         // console.log states that 'temp' cannot 
         .then (function (data) {
                var tempValue = data['main']['temp'];
                var descrValue = data['weather'][0]['description'];
-               temp.innerHTML = tempValue; 
-               temp.innerHTML = descrValue;
+               currentTemp.innerHTML = 'Temperature:' +tempValue; 
+               weatherDescription.innerHTML = 'Description:' +descrValue;
+
+               return data;
            })
     
         // then this loops over the data and generates a table and rows. 
@@ -57,8 +75,9 @@ document.addEventListener('DOMContentLoaded', function(){
     // 'click' is the user action
     // 'getWeather' is function activated
     
-    formBtn.addEventListener('click', getWeather);
+    formBtn.addEventListener('submit', getWeather);
 })
+
 // Alternative method \\
 //button.addEventListener('click', function(){
 
