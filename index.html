@@ -36,22 +36,29 @@
                 </div>
                 <div class="travelForm">
                     <label for="to" class="icon"><i class="fa-solid fa-clock"></i></label>
-                    <select id="timeAssumed">
-                        <option value="15">15mins</option>
-                        <option value="30">30mins</option>
-                        <option value="60">1hr</option>
+                    <div class="input-field">
+                        <select id="timeAssumed">
+                          <option value="15">15 mins</option>
+                          <option value="30">30 mins</option>
+                          <option value="60">1 hr</option>
                         </select>
-                    <select id="mode">
-                        <option value="DRIVING">Driving</option>
-                        <option value="WALKING">Walking</option>
-                        <option value="BICYCLING">Cycling</option>
-                        <option value="TRANSIT">Train</option>
-                    </select>
+                        <label for="timeAssumed">Time Assumed</label>
+                    </div>
+                    <div class="input-field">
+                        <select id="mode">
+                            <option value="DRIVING">Driving</option>
+                            <option value="WALKING">Walking</option>
+                            <option value="BICYCLING">Cycling</option>
+                            <option value="TRANSIT">Train</option>
+                        </select>
+                        <label for="mode">Mode of Transport</label>
+                    </div>
                 </div>
                     <button id="formBtn" class="btn, w-50"><i class="fa-sharp fa-solid fa-diamond-turn-right"></i></button>                   
             </form>
             <div class="recommendedCard">
             <h2>No plans?</h2>
+            <div class="input-field">
             <select id="recommendOptions">
                 <option value="airport">airport</option>
                 <option value="amusement_park">amusement_park</option>
@@ -90,7 +97,9 @@
                 <option value="travel_agency">travel_agency</option>
                 <option value="zoo">zoo</option>
             </select>
+            <label for="recommendOptions">Recommended Options</label>
             <button id="nearbyBtn"><i class="fa-solid fa-block-question"></i></button>
+            </div>
             </div>
         </div>
         <div class="containerLg">
@@ -122,9 +131,9 @@
             
         </div>
         </section>
-        <!-- <div class="containerLg" id="recommendedModal">
+        <div class="containerLg" id="recommendedModal">
             <table class="table" id="places"></table>
-        </div> -->
+        </div>
     </main>
 
 
