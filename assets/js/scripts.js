@@ -218,21 +218,6 @@ function callback(results, status) {
 //     cell2.innerHTML = "No photo available";
 //   }
 // }
-// Import the dayjs library
-// import dayjs from 'dayjs';
 
-// // Define the trip information as an array of objects
-// 
-
-// // Get the unordered list element where the travel itinerary will be displayed
-// 
-
-//   // Calculate the end time for the current leg of the trip
-//   leg.endTime = leg.startTime.add(leg.duration, 'hour');
-
-//   destinationListItem.textContent = `${leg.from} to ${leg.to}, ${leg.duration}, ${leg.distance}, starting at ${leg.startTime.format('h:mm A')} and ending at ${leg.endTime.format('h:mm A')}`;
-
-//   itineraryList.appendChild(destinationListItem);
-// });
 //Starts it all//
 window.onload = initMap();
