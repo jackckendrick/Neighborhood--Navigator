@@ -7,7 +7,7 @@
 // http://api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}
 
 //Instead of referencing travelformbox, try 'formBtn'
-var submitBtn = document.querySelector('.travelFormBox');
+var formBtn = document.getElementById('formbtn');
 
 // try targeting destination list- See line 156
 var inputValue = document.getElementById('to');
@@ -64,9 +64,11 @@ function getWeather(event) {
 
 }
 
-submitBtn.addEventListener('submit', getWeather);
+formBtn.addEventListener('click', getWeather);
 
 })
+
+
 
 // Alternative method \\
 //button.addEventListener('click', function(){
@@ -291,4 +293,5 @@ function handleFormSubmit(event) {
 // }
 
 //Starts it all//
+
 window.onload = initMap();
