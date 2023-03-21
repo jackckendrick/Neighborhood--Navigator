@@ -52,7 +52,7 @@ function calcRoute(directionsService, directionsRenderer) {
         var to = document.getElementById('to').value
         var duration = result.routes[0].legs[0].duration.text;
         var distance = result.routes[0].legs[0].distance.text;
-        var currentTime = dayjs().format('h:mm A');
+        var satrtTime = dayjs().format('h:mm A');
         if(duration.length > 8){
           var timeArray = duration.split(" ")
           console.log(timeArray); 
@@ -74,7 +74,7 @@ function calcRoute(directionsService, directionsRenderer) {
 console.log(result);
 // Format the list item text using HTML tags
       const formattedText = `
-      <p>From: ${from}<br />To: ${to}<br />Duration: ${duration}<br />Distance: ${distance}<br />Current Time: ${currentTime}<br />Arrival Time: ${arrivalTime}</p>`;
+      <p>From: ${from}<br />To: ${to}<br />Duration: ${duration}<br />Distance: ${distance}<br />Current Time: ${startTime}<br />Arrival Time: ${arrivalTime}</p>`;
 
 // Set the formatted text as the destination list item's HTML content
       destinationListItem.html(formattedText);
@@ -165,9 +165,7 @@ function callback(results, status) {
         
         // ~~~ Map End ~~~ Recommended Start ~~~ Experimental //
         
-        //   function addTripLength(){
-          //     let sum = 0;
-          //     const trips = $(".locationList")
+      
           //     for (var i = 0; i<trips.length; i++) {
             //       const trip= trips[i];
             //       const tripLength = parseInt(tripInformation.duration.textContent);
