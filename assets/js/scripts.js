@@ -166,15 +166,7 @@ function callback(results, status) {
         // ~~~ Map End ~~~ Recommended Start ~~~ Experimental //
         
       
-          //     for (var i = 0; i<trips.length; i++) {
-            //       const trip= trips[i];
-            //       const tripLength = parseInt(tripInformation.duration.textContent);
-            //       if (!isNaN(trip)) {
-              //         sum += trip;
-              //     }
-              //   }
-              //   console.log(`The total sum of the list item values is ${sum}.`);
-              // }
+         
               
               // addTripLength();
         // autocomplete2.addListener('place_changed', searchNearbyPlaces);
