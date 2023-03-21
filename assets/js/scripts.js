@@ -222,29 +222,7 @@ function callback(results, status) {
 // import dayjs from 'dayjs';
 
 // // Define the trip information as an array of objects
-// const tripInformation = [
-//   {
-//     from: 'New York',
-//     to: 'Los Angeles',
-//     duration: '6 hours',
-//     distance: '2,475 miles',
-//     startTime: dayjs('2023-03-20 8:00 AM')
-//   },
-//   {
-//     from: 'Los Angeles',
-//     to: 'San Francisco',
-//     duration: '1.5 hours',
-//     distance: '383 miles',
-//     startTime: null
-//   },
-//   {
-//     from: 'San Francisco',
-//     to: 'Seattle',
-//     duration: '2.5 hours',
-//     distance: '808 miles',
-//     startTime: null
-//   }
-// ];
+// 
 
 // // Get the unordered list element where the travel itinerary will be displayed
 // const itineraryList = document.querySelector('ul');
