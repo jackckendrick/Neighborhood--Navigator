@@ -225,20 +225,7 @@ function callback(results, status) {
 // 
 
 // // Get the unordered list element where the travel itinerary will be displayed
-// const itineraryList = document.querySelector('ul');
-
-// // Loop through each leg of the trip and create a new HTML element to display the trip information
-// tripInformation.forEach((leg, index) => {
-//   const destinationListItem = document.createElement('li');
-
-//   // Set the start time for the current leg of the trip
-//   if (index === 0) {
-//     // If this is the first leg of the trip, use the start time from the trip information object
-//     leg.startTime = leg.startTime;
-//   } else {
-//     // Otherwise, use the end time of the previous leg of the trip
-//     leg.startTime = tripInformation[index - 1].endTime;
-//   }
+// 
 
 //   // Calculate the end time for the current leg of the trip
 //   leg.endTime = leg.startTime.add(leg.duration, 'hour');
