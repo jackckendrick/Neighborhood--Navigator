@@ -58,7 +58,7 @@ function calcRoute(directionsService, directionsRenderer) {
   });
 }
 
-//  Gets Geocode information //
+//  Gets Geocode information, called in directionsService //
 function geocode() {
   geocoder = new google.maps.Geocoder();
   geocoder.geocode( { 'address': lastAddress}, function(results, status) {
@@ -77,6 +77,7 @@ function geocode() {
   });
 }
 
+// Swaps the location input forms on submit, called in directionsService //
 function swapForm() {
   let origin = document.getElementById('from').value;
   let destination = document.getElementById('to').value;
@@ -87,10 +88,11 @@ function swapForm() {
   document.getElementById('to').value = '';
 }
 
+
+// Search Nearby //
 nearbyBtn = document.getElementById('nearbyBtn');
 nearbyBtn.addEventListener('click', nearbySearch);
 
-// Broken Search Nearby //
 function nearbySearch(){
   var prevLocation = new google.maps.LatLng(lastCoordinates.lat, lastCoordinates.lng)
   let typeSelection = document.getElementById('recommendOptions').selectedOptions[0].value;
@@ -107,13 +109,10 @@ function nearbySearch(){
 
 }
 
-
-
 function searchNearbyPlaces() {
     // document.getElementById('places').innerHTML = ''
     // Get the place details from the autocomplete object.
   var place = autocomplete2.getPlace();
-  console.log(place);
 }   
 
 function callback(results, status) {
@@ -125,7 +124,6 @@ function callback(results, status) {
 }
 
 function createMarker(place) {
-  console.log(place);
   var table = document.getElementById("places");
   var row = table.insertRow();
   var cell1 = row.insertCell(0);
@@ -138,11 +136,10 @@ function createMarker(place) {
   cell2.innerHTML = `<img width="300" height="300" src="${photoUrl}"/>;`;
 }
 
-//old
-// function callback(results, status) {
-//   console.log(results);
-//   console.log(status);
-// }
+document.addEventListener('DOMContentLoaded', function() {
+  var elems = document.querySelectorAll('select');
+  var instances = M.FormSelect.init(elems);
+});
 
 
 // Auto Fill //
