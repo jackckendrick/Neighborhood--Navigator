@@ -14,7 +14,10 @@ function initMap() {
   const map = new google.maps.Map(document.getElementById("googleMap"), {
     zoom: 4,
     center: {lat: 40.116386, lng: -101.299591},
-    mapTypeId: google.maps.MapTypeId.ROADMAP
+    mapTypeId: google.maps.MapTypeId.ROADMAP,
+    streetViewControl: false,
+    mapTypeControl: false,
+    fullScreenControl: false
   });
   globalMap = map
 
@@ -46,6 +49,7 @@ function calcRoute(directionsService, directionsRenderer) {
       endAddress = result.routes[0].legs[0].end_address;
       lastAddress = endAddress;
       geocode();
+      swapForm();
     } else {
       directionsRenderer.setDirections({routes: []});
       map.setCenter(center);
@@ -54,7 +58,7 @@ function calcRoute(directionsService, directionsRenderer) {
   });
 }
 
-//  Gets Geocode information //
+//  Gets Geocode information, called in directionsService //
 function geocode() {
   geocoder = new google.maps.Geocoder();
   geocoder.geocode( { 'address': lastAddress}, function(results, status) {
@@ -73,14 +77,25 @@ function geocode() {
   });
 }
 
+// Swaps the location input forms on submit, called in directionsService //
+function swapForm() {
+  let origin = document.getElementById('from').value;
+  let destination = document.getElementById('to').value;
+  let temp = origin; // store the value of origin in a temporary variable
+  origin = destination; // overwrite the value of origin with the value of destination
+  destination = temp; // set the value of destination to the value of the temporary variable
+  document.getElementById('from').value = origin; // update the input fields with the new values
+  document.getElementById('to').value = '';
+}
+
+
+// Search Nearby //
 nearbyBtn = document.getElementById('nearbyBtn');
 nearbyBtn.addEventListener('click', nearbySearch);
 
-// Broken Search Nearby //
 function nearbySearch(){
-  var prevLocation = new google.maps.LatLng(lastCoordinates.lat, lastCoordinates.lng);
-
-let typeSelection = document.getElementById('recommendOptions').selectedOptions[0].value;
+  var prevLocation = new google.maps.LatLng(lastCoordinates.lat, lastCoordinates.lng)
+  let typeSelection = document.getElementById('recommendOptions').selectedOptions[0].value;
 
   var request = {
     location: prevLocation,
@@ -90,12 +105,41 @@ let typeSelection = document.getElementById('recommendOptions').selectedOptions[
 
   service = new google.maps.places.PlacesService(globalMap);
   service.nearbySearch(request, callback);
+  searchNearbyPlaces();
+
 }
 
+function searchNearbyPlaces() {
+    // document.getElementById('places').innerHTML = ''
+    // Get the place details from the autocomplete object.
+  var place = autocomplete2.getPlace();
+}   
+
 function callback(results, status) {
-  console.log(results);
-  console.log(status);
+  if (status === google.maps.places.PlacesServiceStatus.OK) {
+    for (var i = 0; i < results.length; i++) {
+      createMarker(results[i]);
+    }
+  }
 }
+
+function createMarker(place) {
+  var table = document.getElementById("places");
+  var row = table.insertRow();
+  var cell1 = row.insertCell(0);
+  cell1.innerHTML = place.name;
+  if (!place.photos) {
+    return;
+  }
+  let photoUrl = place.photos[0].getUrl();
+  let cell2 = row.insertCell(1);
+  cell2.innerHTML = `<img width="300" height="300" src="${photoUrl}"/>;`;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  var elems = document.querySelectorAll('select');
+  var instances = M.FormSelect.init(elems);
+});
 
 
 // Auto Fill //
@@ -153,60 +197,6 @@ function handleFormSubmit(event) {
     
     // use event delegation on the `destinationListEL` to listen for click on any element with a class of `delete-item-btn`
     destinationListEl.on('click', '.delete-item-btn', handleRemoveItem);
-    
-    
-    
-    // ~~~ Map End ~~~ Recommended Start ~~~ Experimental //
-    
-//   autocomplete2.addListener('place_changed', searchNearbyPlaces);
-  
-//   document.getElementById('recommendOptions').onchange = searchNearbyPlaces;
-  
-//   function searchNearbyPlaces() {
-//       // document.getElementById('places').innerHTML = ''
-//       // Get the place details from the autocomplete object.
-//       var place = autocomplete2.getPlace();
-//       console.log(place);
-    
-//       // Create a map centered at the location entered in the autocomplete field.
-//       map = new google.maps.Map(document.getElementById('googleMap'), {
-//           center: place.geometry.location,
-//   zoom: 15
-// });
-  
-//   // Perform a nearby search for places of type 'store'.
-//   service = new google.maps.places.PlacesService(map);
-//   service.nearbySearch({
-//     location: place.geometry.location,
-//     radius: '500',
-//     type: [document.getElementById('type').value]
-//   }, callback);
-// }
-
-// function callback(results, status) {
-//   if (status === google.maps.places.PlacesServiceStatus.OK) {
-//     console.log(results.length)
-//     for (var i = 0; i < results.length; i++) {
-//       createMarker(results[i]);
-//     }
-//   }
-// }
-
-// function createMarker(place) {
-//   console.log(place);
-//   var table = document.getElementById("places");
-//   var row = table.insertRow();
-//   var cell1 = row.insertCell(0);
-//   cell1.innerHTML = place.name;
-//   if (place.photos) {
-//     let photoUrl = place.photos[0].getUrl();
-//     let cell2 = row.insertCell(1);
-//     cell2.innerHTML = `<img width="300" height="300" src="${photoUrl}"/>`;
-//   } else {
-//     let cell2 = row.insertCell(1);
-//     cell2.innerHTML = "No photo available";
-//   }
-// }
 
 //Starts it all//
 window.onload = initMap();
