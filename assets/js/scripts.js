@@ -2,6 +2,8 @@ let tripDuration // Trip duration global var
 let lastAddress // Trip last address
 let lastCoordinates // Trip last coordinates
 let globalMap
+let markers = [];
+const now = dayjs();
 // ~~~ Map Start ~~~ //
 
 var destinationUnorderedList = $('#timeSpentUl')
@@ -13,7 +15,7 @@ const output = document.querySelector('#output')
 function initMap() {
   const map = new google.maps.Map(document.getElementById("googleMap"), {
     zoom: 4,
-    center: {lat: 40.116386, lng: -101.299591},
+    center: { lat: 40.116386, lng: -101.299591 },
     mapTypeId: google.maps.MapTypeId.ROADMAP,
     streetViewControl: false,
     mapTypeControl: false,
@@ -24,7 +26,7 @@ function initMap() {
   directionsRenderer.setMap(map);
 
   // Button to update locations //
-  document.getElementById("formBtn").addEventListener("click", function(event){
+  document.getElementById("formBtn").addEventListener("click", function (event) {
     event.preventDefault();
     calcRoute(directionsService, directionsRenderer);
   });
@@ -51,58 +53,58 @@ function calcRoute(directionsService, directionsRenderer) {
 
       var destinationListItem = $(
         '<li class="flex-row justify-space-between locationList align-center p-2 bg-light text-dark">'
-        );
-        var from = document.getElementById('from').value
-        var to = document.getElementById('to').value
-        var duration = result.routes[0].legs[0].duration.text;
-        var distance = result.routes[0].legs[0].distance.text;
-        var startTime = dayjs().format('h:mm A');
-        if(duration.length > 8){
-          var timeArray = duration.split(" ")
-          console.log(timeArray);
-          var hours = parseInt(timeArray[0]);
-          var minutes = parseInt(timeArray[2]);
-          var hourMinutes = hours*60
-          minutes=hourMinutes+minutes
-          var minutesAdded = dayjs().add(minutes, "minute").format("h:mm A")
-          var hoursAdded = dayjs().add(hours, "hour").format("h:mm A")
-          console.log(minutesAdded);
-          var arrivalTime = minutesAdded;
-        } else{
-          var travelTime = parseInt(duration)
-          var arrivalTime = dayjs().add(travelTime, "minute").format("h:mm A");
+      );
+      var from = document.getElementById('from').value
+      var to = document.getElementById('to').value
+      var duration = result.routes[0].legs[0].duration.text;
+      var distance = result.routes[0].legs[0].distance.text;
+      var startTime = dayjs().format('h:mm A');
+      if (duration.length > 8) {
+        var timeArray = duration.split(" ")
+        console.log(timeArray);
+        var hours = parseInt(timeArray[0]);
+        var minutes = parseInt(timeArray[2]);
+        var hourMinutes = hours * 60
+        minutes = hourMinutes + minutes
+        var minutesAdded = dayjs().add(minutes, "minute").format("h:mm A")
+        var hoursAdded = dayjs().add(hours, "hour").format("h:mm A")
+        console.log(minutesAdded);
+        var arrivalTime = minutesAdded;
+      } else {
+        var travelTime = parseInt(duration)
+        var arrivalTime = dayjs().add(travelTime, "minute").format("h:mm A");
 
-        }
-        console.log(travelTime);
-        // var arrivalTime = durationcurrentTime.add(result.routes[0].legs[0].duration.val());
-console.log(result);
-// Format the list item text using HTML tags
+      }
+      console.log(travelTime);
+      // var arrivalTime = durationcurrentTime.add(result.routes[0].legs[0].duration.val());
+      console.log(result);
+      // Format the list item text using HTML tags
       const formattedText = `
       <p>From: ${from}<br />To: ${to}<br />Duration: ${duration}<br />Distance: ${distance}<br />Current Time: ${startTime}<br />Arrival Time: ${arrivalTime}</p>`;
 
-// Set the formatted text as the destination list item's HTML content
+      // Set the formatted text as the destination list item's HTML content
       destinationListItem.html(formattedText);
 
-        // add delete button to remove destination from list
-        destinationListItem.append(
-          '<button class="btn btn-danger btn-small delete-item-btn">Remove</button>'
-          );
-          destinationUnorderedList.append(destinationListItem);
-          tripDuration = result.routes[0].legs[0].duration.text;
-          endAddress = result.routes[0].legs[0].end_address;
-          lastAddress = endAddress;
-          geocode();
-          swapForm();
+      // add delete button to remove destination from list
+      destinationListItem.append(
+        '<button class="btn btn-danger btn-small delete-item-btn">Remove</button>'
+      );
+      destinationUnorderedList.append(destinationListItem);
+      tripDuration = result.routes[0].legs[0].duration.text;
+      endAddress = result.routes[0].legs[0].end_address;
+      lastAddress = endAddress;
+      geocode();
+      swapForm();
 
-        } else {
-          directionsRenderer.setDirections({routes: []});
-          map.setCenter(center);
-          output.innerHTML = "<p>Can't drive there mate.</p>"
-        }
-      });
-        }
+    } else {
+      directionsRenderer.setDirections({ routes: [] });
+      map.setCenter(center);
+      output.innerHTML = "<p>Can't drive there mate.</p>"
+    }
+  });
+}
 
-        //  Gets Geocode information //
+//  Gets Geocode information //
 
 
 
@@ -110,7 +112,7 @@ console.log(result);
 
 function geocode() {
   geocoder = new google.maps.Geocoder();
-  geocoder.geocode( { 'address': lastAddress}, function(results, status) {
+  geocoder.geocode({ 'address': lastAddress }, function (results, status) {
     if (status == 'OK') {
 
       let lng = results[0].geometry.location.lng();
@@ -138,13 +140,13 @@ function swapForm() {
 }
 
 
-// Search Nearby //
+// Search Nearby Call //
 nearbyBtn = document.getElementById('nearbyBtn');
 nearbyBtn.addEventListener('click', nearbySearch);
 
-
-function nearbySearch(){
-  var prevLocation = new google.maps.LatLng(lastCoordinates.lat, lastCoordinates.lng)
+// Nearby Search Function
+function nearbySearch() {
+  var prevLocation = new google.maps.LatLng(lastCoordinates.lat, lastCoordinates.lng);
   let typeSelection = document.getElementById('recommendOptions').selectedOptions[0].value;
 
   var request = {
@@ -155,39 +157,123 @@ function nearbySearch(){
 
   service = new google.maps.places.PlacesService(globalMap);
   service.nearbySearch(request, callback);
-  searchNearbyPlaces();
-
-}
-
-function searchNearbyPlaces() {
-    // document.getElementById('places').innerHTML = ''
-    // Get the place details from the autocomplete object.
-  var place = autocomplete2.getPlace();
 }
 
 function callback(results, status) {
   if (status === google.maps.places.PlacesServiceStatus.OK) {
+    clearMarkers();
+
+    const table = document.getElementById("places");
+    while (table.rows.length > 0) {
+      table.deleteRow(0);
+    }
     for (var i = 0; i < results.length; i++) {
-      createMarker(results[i]);
+      let place = results[i];
+
+      service.getDetails({ placeId: place.place_id, fields: ['name', 'rating', 'formatted_phone_number', 'opening_hours', 'photos', 'geometry', 'formatted_address'] }, (details, status) => {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+          nearbyResults(details);
+          createMarker(details);
+        }
+      });
     }
   }
 }
 
+// Nearby Search Function RESULTS
+function nearbyResults(place) {
+  const table = document.getElementById("places");
+  const row = table.insertRow();
+  // Starting here
+  const [cell1, cell2, cell3] = [row.insertCell(0), row.insertCell(1), row.insertCell(2)];
+  const { name, formatted_phone_number, rating, opening_hours, photos, formatted_address} = place;
+  const photoUrl = photos ? photos[0].getUrl() : '';
+  console.log(place);
+  // Ending here, I have no clue what I'm looking at
+  // Edit, I figured it out <3
 
-function createMarker(place) {
-  var table = document.getElementById("places");
-  var row = table.insertRow();
-  var cell1 = row.insertCell(0);
-  cell1.innerHTML = place.name;
-  if (!place.photos) {
-    return;
-  }
-  let photoUrl = place.photos[0].getUrl();
-  let cell2 = row.insertCell(1);
-  cell2.innerHTML = `<img width="300" height="300" src="${photoUrl}"/>;`;
+  // In cell1 adds information of a nearby place
+  cell1.innerHTML = `
+    <h3>${name}</h3><br>
+    Phone: ${formatted_phone_number || 'Not available'}<br>
+    Rating: ${rating || 'Not available'}<br>
+    Status: ${getPlaceStatus(opening_hours)}<br>
+    Address: ${formatted_address}
+  `;
+
+  // In cell2 adds weekly schedule
+  cell2.innerHTML = `
+  <h3>Schedule</h3>
+    ${opening_hours && opening_hours.weekday_text.length ? opening_hours.weekday_text.join('<br>') : 'Schedule Not available'}
+  `;
+
+  // In cell3 adds an available photo
+  cell3.innerHTML = photos ? `<img width="300" height="300" src="${photoUrl}"/>` : '';
+
+  row.addEventListener("click", function () {
+    setDestination(place.formatted_address);
+
+  });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+// When row is clicked a new address is added to Destination
+function setDestination(address) {
+  const destinationInput = document.getElementById("to");
+  destinationInput.value = address;
+  calcRoute(directionsService, directionsRenderer);
+}
+
+// Creates Map Markers
+function createMarker(place) {
+  let placeInfo = place.name + '<br>'
+    + 'Phone: ' + (place.formatted_phone_number ? place.formatted_phone_number : 'Not available') + '<br>'
+    + 'Rating: ' + (place.rating ? place.rating : 'Not available') + '<br>'
+    + 'Status: ' + getPlaceStatus(place.opening_hours);
+
+  var marker = new google.maps.Marker({
+    position: place.geometry.location,
+    map: globalMap,
+    title: place.name
+  });
+
+  var infoWindow = new google.maps.InfoWindow({
+    content: placeInfo
+  });
+
+  bindInfoWindow(marker, globalMap, infoWindow, placeInfo);
+  marker.setMap(globalMap);
+
+  markers.push(marker);
+}
+
+// Clears Map Markers
+function clearMarkers() {
+  for (let i = 0; i < markers.length; i++) {
+    markers[i].setMap(null);
+  }
+  markers = [];
+}
+
+// Opens Map Markers on Click
+function bindInfoWindow(marker, globalMap, infoWindow, html) {
+  marker.addListener('click', function () {
+    infoWindow.setContent(html);
+    infoWindow.open(globalMap, this);
+  });
+}
+
+// Checks for place Open Status
+function getPlaceStatus(opening_hours) {
+  if (!opening_hours) {
+    return 'Not available';
+  }
+  if (opening_hours.periods && opening_hours.periods.length === 1 && opening_hours.periods[0].open && !opening_hours.periods[0].close) {
+    return 'Open';
+  }
+  return opening_hours.isOpen() ? 'Open' : 'Closed';
+}
+
+document.addEventListener('DOMContentLoaded', function () {
   var elems = document.querySelectorAll('select');
   var instances = M.FormSelect.init(elems);
 });
@@ -195,31 +281,31 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 // Auto Fill //
-        const input1 = document.getElementById('from');
-        const input2 = document.getElementById('to');
-        const autocompleteOptions = {
-          fields: ["formatted_address", "geometry", "name"],
-          strictBounds: false,
-          types: ["geocode", "establishment" ]
-        }
+const input1 = document.getElementById('from');
+const input2 = document.getElementById('to');
+const autocompleteOptions = {
+  fields: ["formatted_address", "geometry", "name"],
+  strictBounds: false,
+  types: ["geocode", "establishment"]
+}
 
 
-        const autocomplete1 = new google.maps.places.Autocomplete(input1, autocompleteOptions);
-        const autocomplete2 = new google.maps.places.Autocomplete(input2, autocompleteOptions);
+const autocomplete1 = new google.maps.places.Autocomplete(input1, autocompleteOptions);
+const autocomplete2 = new google.maps.places.Autocomplete(input2, autocompleteOptions);
 
-        //This function serves to remove a list item from the unordered list
-        function handleRemoveItem(event) {
-          // convert button we pressed (`event.target`) to a jQuery DOM object
-          var removeBtnClicked = $(event.target);
-          // get the parent `<li>` element from the button we pressed and remove it
-          removeBtnClicked.parent('li').remove();
-        }
-        // use event delegation on the `destinationListEL` to listen for click on any element with a class of `delete-item-btn`
-        destinationUnorderedList.on('click', '.delete-item-btn', handleRemoveItem);
+//This function serves to remove a list item from the unordered list
+function handleRemoveItem(event) {
+  // convert button we pressed (`event.target`) to a jQuery DOM object
+  var removeBtnClicked = $(event.target);
+  // get the parent `<li>` element from the button we pressed and remove it
+  removeBtnClicked.parent('li').remove();
+}
+// use event delegation on the `destinationListEL` to listen for click on any element with a class of `delete-item-btn`
+destinationUnorderedList.on('click', '.delete-item-btn', handleRemoveItem);
 
 
 
-        // ~~~ Map End ~~~ Recommended Start ~~~ Experimental //
+// ~~~ Map End ~~~ Recommended Start ~~~ Experimental //
 
 
 //Starts it all//
