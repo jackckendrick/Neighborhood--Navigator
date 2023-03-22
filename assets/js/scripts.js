@@ -217,6 +217,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // use event delegation on the `destinationListEL` to listen for click on any element with a class of `delete-item-btn`
         destinationUnorderedList.on('click', '.delete-item-btn', handleRemoveItem);
 
+        $(".containerMd").addClass('hoverable');
+        $(".containergitLg").addClass('#82b1ff blue accent-1 pulse');
+
 
 
         // ~~~ Map End ~~~ Recommended Start ~~~ Experimental //
