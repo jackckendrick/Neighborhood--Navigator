@@ -14,7 +14,10 @@ function initMap() {
   const map = new google.maps.Map(document.getElementById("googleMap"), {
     zoom: 4,
     center: {lat: 40.116386, lng: -101.299591},
-    mapTypeId: google.maps.MapTypeId.ROADMAP
+    mapTypeId: google.maps.MapTypeId.ROADMAP,
+    streetViewControl: false,
+    mapTypeControl: false,
+    fullScreenControl: false
   });
   globalMap = map
 
@@ -44,6 +47,7 @@ function calcRoute(directionsService, directionsRenderer) {
       output.innerHTML = "<div> From: " + document.getElementById('from').value + ".<br /> To: " + document.getElementById('to').value + ". <br /> Driving Distance " + result.routes[0].legs[0].distance.text + ".<br /> Duration " + result.routes[0].legs[0].duration.text + ". </div>";
       
       directionsRenderer.setDirections(result);
+
       
       var destinationListItem = $(
         '<li class="flex-row justify-space-between locationList align-center p-2 bg-light text-dark">'
@@ -95,6 +99,22 @@ console.log(result);
         }
 
         //  Gets Geocode information //
+
+      tripDuration = result.routes[0].legs[0].duration.text;
+      endAddress = result.routes[0].legs[0].end_address;
+      lastAddress = endAddress;
+      geocode();
+      swapForm();
+    } else {
+      directionsRenderer.setDirections({routes: []});
+      map.setCenter(center);
+      output.innerHTML = "<p>Can't drive there mate.</p>"
+    }
+  });
+}
+
+//  Gets Geocode information, called in directionsService //
+
 function geocode() {
   geocoder = new google.maps.Geocoder();
   geocoder.geocode( { 'address': lastAddress}, function(results, status) {
@@ -113,15 +133,26 @@ function geocode() {
   });
 }
 
+// Swaps the location input forms on submit, called in directionsService //
+function swapForm() {
+  let origin = document.getElementById('from').value;
+  let destination = document.getElementById('to').value;
+  let temp = origin; // store the value of origin in a temporary variable
+  origin = destination; // overwrite the value of origin with the value of destination
+  destination = temp; // set the value of destination to the value of the temporary variable
+  document.getElementById('from').value = origin; // update the input fields with the new values
+  document.getElementById('to').value = '';
+}
+
+
+// Search Nearby //
 nearbyBtn = document.getElementById('nearbyBtn');
 nearbyBtn.addEventListener('click', nearbySearch);
        
 
-// Broken Search Nearby //
 function nearbySearch(){
-  var prevLocation = new google.maps.LatLng(lastCoordinates.lat, lastCoordinates.lng);
-
-let typeSelection = document.getElementById('recommendOptions').selectedOptions[0].value;
+  var prevLocation = new google.maps.LatLng(lastCoordinates.lat, lastCoordinates.lng)
+  let typeSelection = document.getElementById('recommendOptions').selectedOptions[0].value;
 
   var request = {
     location: prevLocation,
@@ -131,12 +162,44 @@ let typeSelection = document.getElementById('recommendOptions').selectedOptions[
 
   service = new google.maps.places.PlacesService(globalMap);
   service.nearbySearch(request, callback);
+  searchNearbyPlaces();
+
 }
 
+function searchNearbyPlaces() {
+    // document.getElementById('places').innerHTML = ''
+    // Get the place details from the autocomplete object.
+  var place = autocomplete2.getPlace();
+}   
+
 function callback(results, status) {
-  console.log(results);
-  console.log(status);
+  if (status === google.maps.places.PlacesServiceStatus.OK) {
+    for (var i = 0; i < results.length; i++) {
+      createMarker(results[i]);
+    }
+  }
 }
+
+
+function createMarker(place) {
+  var table = document.getElementById("places");
+  var row = table.insertRow();
+  var cell1 = row.insertCell(0);
+  cell1.innerHTML = place.name;
+  if (!place.photos) {
+    return;
+  }
+  let photoUrl = place.photos[0].getUrl();
+  let cell2 = row.insertCell(1);
+  cell2.innerHTML = `<img width="300" height="300" src="${photoUrl}"/>;`;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  var elems = document.querySelectorAll('select');
+  var instances = M.FormSelect.init(elems);
+});
+
+
 
 // Auto Fill //
         const input1 = document.getElementById('from');
@@ -166,6 +229,7 @@ function callback(results, status) {
         // ~~~ Map End ~~~ Recommended Start ~~~ Experimental //
         
       
+
          
               
               // addTripLength();
@@ -218,6 +282,14 @@ function callback(results, status) {
 //     cell2.innerHTML = "No photo available";
 //   }
 // }
+
+      // get the parent `<li>` element from the button we pressed and remove it
+      removeBtnClicked.parent('li').remove();
+    }
+    
+    // use event delegation on the `destinationListEL` to listen for click on any element with a class of `delete-item-btn`
+    destinationListEl.on('click', '.delete-item-btn', handleRemoveItem);
+
 
 //Starts it all//
 window.onload = initMap();
