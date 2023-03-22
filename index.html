@@ -21,14 +21,14 @@
         <div class="containerMd">
             <h2>Travel Distance</h2>
             <p>Use me to find the distance between two places.</p>
-            <form class="travelFormBox">
+            <form class="travelFormBox ">
                 <div class="travelForm">
                     <label for="from" class="icon"><i class="fa-sharp fa-solid fa-location-dot"></i></label>
                     <div class="col-xs-4">
                         <input type="text" id="from" placeholder="Origin" class="formControl">
                     </div>
                 </div>
-                <div class="travelForm">
+                <div class="travelForm ">
                     <label for="to" class="icon"><i class="fa-sharp fa-solid fa-location-dot"></i></label>
                     <div class="col-xs-4">
                         <input type="text" id="to" placeholder="Destination" name="GoingTo" class="formControl">
@@ -36,22 +36,29 @@
                 </div>
                 <div class="travelForm">
                     <label for="to" class="icon"><i class="fa-solid fa-clock"></i></label>
-                    <select id="timeAssumed">
-                        <option value="15">15mins</option>
-                        <option value="30">30mins</option>
-                        <option value="60">1hr</option>
+                    <div class="input-field">
+                        <select id="timeAssumed">
+                          <option value="15">15 mins</option>
+                          <option value="30">30 mins</option>
+                          <option value="60">1 hr</option>
                         </select>
-                    <select id="mode">
-                        <option value="DRIVING">Driving</option>
-                        <option value="WALKING">Walking</option>
-                        <option value="BICYCLING">Cycling</option>
-                        <option value="TRANSIT">Train</option>
-                    </select>
+                        <label for="timeAssumed">Time Assumed</label>
+                    </div>
+                    <div class="input-field">
+                        <select id="mode">
+                            <option value="DRIVING">Driving</option>
+                            <option value="WALKING">Walking</option>
+                            <option value="BICYCLING">Cycling</option>
+                            <option value="TRANSIT">Train</option>
+                        </select>
+                        <label for="mode">Mode of Transport</label>
+                    </div>
                 </div>
                     <button id="formBtn" class="btn w-50 blue waves-effect"><i class="fa-sharp fa-solid fa-diamond-turn-right"></i></button>                   
             </form>
             <div class="recommendedCard">
             <h2>No plans?</h2>
+            <div class="input-field">
             <select id="recommendOptions">
                 <option value="airport">airport</option>
                 <option value="amusement_park">amusement_park</option>
@@ -90,7 +97,12 @@
                 <option value="travel_agency">travel_agency</option>
                 <option value="zoo">zoo</option>
             </select>
+            
             <button class="btn-flat waves-effect orange btn-small" id="nearbyBtn"><i class="small material-icons">search</i></button>
+            <label for="recommendOptions">Recommended Options</label>
+            <button id="nearbyBtn"><i class="fa-solid fa-block-question"></i></button>
+
+            </div>
             </div>
         </div>
         <div class="containerLg">
@@ -122,9 +134,9 @@
             
         </div>
         </section>
-        <!-- <div class="containerLg" id="recommendedModal">
+        <div class="containerLg" id="recommendedModal">
             <table class="table" id="places"></table>
-        </div> -->
+        </div>
     </main>
 
 
@@ -138,6 +150,8 @@
     src="https://code.jquery.com/jquery-3.6.4.js"
     integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
     crossorigin="anonymous"></script>
+    <!--DayJS-->
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
     <!-- Axios CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.4/axios.js" integrity="sha512-A/D/17S8jG62ka9f3jPwMs+bKGJ1f/xQts7bAUjTIKQf0anTGjlpuEz3q9q++3qRAVYKS3iVx6KzM8GPtIaYfw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- Google Maps -->
