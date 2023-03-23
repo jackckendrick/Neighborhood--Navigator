@@ -218,7 +218,7 @@ document.addEventListener('DOMContentLoaded', function() {
         destinationUnorderedList.on('click', '.delete-item-btn', handleRemoveItem);
 
         $(".containerMd").addClass('hoverable');
-        $(".containerLg").addClass('#82b1ff blue accent-1 pulse');
+        $(".containerLg").addClass('#82b1ff blue accent-1');
 
 
 
