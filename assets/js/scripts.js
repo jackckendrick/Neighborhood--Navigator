@@ -219,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // $(".containerMd").addClass('hoverable');
         $(".containerLg").addClass('#82b1ff blue accent-1');
-        $(".containerLg").addClass('hoverable');
+        $(".containerLg").addClass('z-depth-5 hoverable');
         $(".input-field").addClass('#8bc34a light-green pulse');
 
 
