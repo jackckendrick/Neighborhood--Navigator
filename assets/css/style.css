@@ -7,7 +7,7 @@
 
 body {
    
-    color: var(--maincolor);
+    /* color: var(--maincolor); */
     background-image: url("../images/iguazu.jpg");
     background-size:100% 100%, contain;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
@@ -68,6 +68,10 @@ main {
     height: 40vh;
     margin: 2rem;
 }
+
+/* .input-field {
+    color: white;
+} */
 /* 
 #recommendedModal {
     position: absolute;
