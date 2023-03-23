@@ -222,8 +222,14 @@ document.addEventListener('DOMContentLoaded', function() {
         $(".containerLg").addClass('z-depth-5 hoverable');
         $(".input-field").addClass('yellow lighten-1 pulse');
 
+        const options = document.querySelectorAll('#recommendOptions option');
 
+        options.forEach((option) => {
+          option.textContent = option.textContent.toUpperCase();
+        });
 
+        // + option.textContent.slice(1)
+        // .charAt(0)
         // ~~~ Map End ~~~ Recommended Start ~~~ Experimental //
 
 

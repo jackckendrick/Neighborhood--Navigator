@@ -77,3 +77,6 @@ main {
     position: absolute;
 } */
 
+select {
+    text-transform: capitalize;
+}
