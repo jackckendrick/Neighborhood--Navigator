@@ -220,7 +220,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // $(".containerMd").addClass('hoverable');
         $(".containerLg").addClass('#82b1ff blue accent-1');
         $(".containerLg").addClass('z-depth-5 hoverable');
-        $(".input-field").addClass('yellow lighten-1 pulse');
+        $(".input-field").addClass('blue lighten-1 pulse');
 
         const options = document.querySelectorAll('#recommendOptions option');
 
