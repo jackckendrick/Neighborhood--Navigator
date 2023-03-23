@@ -228,6 +228,8 @@ document.addEventListener('DOMContentLoaded', function() {
           option.textContent = option.textContent.toUpperCase();
         });
 
+        // document.querySelectorAll('#departureCard').addClass('orange z-depth-6');
+
         // + option.textContent.slice(1)
         // .charAt(0)
         // ~~~ Map End ~~~ Recommended Start ~~~ Experimental //
