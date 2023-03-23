@@ -36,6 +36,7 @@ main {
     flex: content;
     justify-content: center;
     text-align: center;
+    padding: 0px 3px 0px 0px;
 }
 
 .containerMd {
@@ -69,14 +70,8 @@ main {
     margin: 2rem;
 }
 
-/* .input-field {
-    color: white;
-} */
+
 /* 
 #recommendedModal {
     position: absolute;
 } */
-
-select {
-    text-transform: capitalize;
-}
