@@ -19,10 +19,11 @@
     <link href="./assets/css/style.css" rel="stylesheet">
 </head>
 <body>
+    <div id="pageTop"></div>
     <main class='z-depth-5'>
-        <section class="mainSection">
-        <div class="containerMd">
-            <h2>Travel Distance</h2>
+        <section id="mainSection" class="mainSection">
+        <div class="containerMd contMd1">
+            <p class="h2">Travel Distance</p>
             <p>Use me to find the distance between two places.</p>
             <form class="travelFormBox">
                 <div class="travelForm">
@@ -51,7 +52,7 @@
                     <button id="formBtn" class="btn"><i class="fa-sharp fa-solid fa-diamond-turn-right"></i></button>
             </form>
             <div class="recommendedCard">
-            <h2>No plans?</h2>
+            <p class="h2">Guide Me!</p>
             <div class="input-field">
             <select id="recommendOptions" class="">
                 <option value="airport">Airport</option>
@@ -103,25 +104,25 @@
             </div>
         </div>
         <div class="containerLg">
-            <h1>Travel The World!</h1>
+            <p class="h1">Travel The World!</p>
             <p>Trip Time Calculator</p>
             <div id="googleMap"></div>
             <div id="output"></div>
         </div>
         <div class="containerMd">
-            <h2>Estimated Time Spent</h2>
-            <div id="departureCard">
-                <p id="departTime"></p>
-                <p id="arrivalTime"></p>
-
-            </div>
+            <p class="h2">Estimated Time Spent</p>
+            <div id="departureCard" class="scrollable">
                 <ul id="timeSpentUl"></ul>
+            </div>
         </div>
         </section>
-        <div class="" id="recommendedModal">
+
+    </main>
+    <div class="activeImg">
+        <div id="recommendedModal">
             <table class="table recommendedTable" id="places"></table>
         </div>
-    </main>
+    </div>
 
 
 

@@ -1,9 +1,10 @@
 :root {
-   --maincolor:black;
-   --subcolor:white;
-   --accentcolor:cyan;
-   --trimcolor:blue; 
-   --inactive: rgba(200, 200, 200, 1);
+    --maincolor: black;
+    --subcolor: white;
+    --accentcolor: cyan;
+    --trimcolor: blue;
+    --inactive: rgba(200, 200, 200, 1);
+    scroll-behavior: smooth;
 }
 
 body {
@@ -11,62 +12,76 @@ body {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
-h2 {
-    
-}
+h2 {}
 
 main {
-    width:  90vw;
+    width: 90%;
     margin-left: auto;
     margin-right: auto;
-    height: 100vh;
-    min-width: 320px;
+    height: 75vh;
     max-width: 2560px;
     background-image: url("../images/iguazu.jpg");
-    background-size:cover;
+    background-size: cover;
     background-position: center;
-    border-radius: 1rem;
+    border-top-left-radius: 2ch;
+    border-top-right-radius: 2ch;
 }
 
-.mainSection {
+#mainSection {
     display: flex;
-    margin-left: auto;
-    margin-right: auto;
+    flex-direction: row;
+    height: 100%;
+    margin-top: 2ch;
+    justify-content: center;
 }
 
-.containerMd, .containerLg {
-    background-color:none;
+.containerMd,
+.containerLg {
+    background-color: none;
     text-align: center;
-    padding: 0px 3px 0px 0px;
+    margin: 2ch;
 }
 
 .containerMd {
-    width: 1.1fr;
-    
+    width: 27%;
+    max-height: 1440px;
+
+
 }
 
 .containerLg {
-    width: 1.5fr;
+    width: 46%;
+    max-height: 1440px;
+    min-height: 500px;
 }
 
+.recommendedTable {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    width: 98%;
+    margin-left: auto;
+    margin-right: auto;
+}
 
 .icon {
-    margin-right: 1rem;
+    margin-right: 1.25rem;
 }
 
 .hoverIntBtn {
     transition: ease-in-out 150ms;
 }
 
-    .hoverIntBtn:hover {
-        scale: 1.05;
-        filter:brightness(1.1), contrast(1.1);
-        
-    }
+.hoverIntBtn:hover {
+    scale: 1.05;
+    filter: brightness(1.1), contrast(1.1);
 
-    .hoverIntBtn:active {
-        scale:0.9;
-    } 
+}
+
+.hoverIntBtn:active {
+    scale: 0.9;
+}
 
 .travelFormBox {
     display: flex;
@@ -77,29 +92,66 @@ main {
 
 .travelForm {
     display: flex;
-    margin: 0rem;
 }
 
 .lwOpacity {
     background-color: rgba(0, 0, 0, 0.45);
     border-radius: 1ch;
     padding: 1ch;
-    margin: 1ch;
+    margin-top: 2ch;
+    z-index: 100;
 }
 
 .mdOpacity {
     background-color: rgba(0, 0, 0, .6);
     border-radius: 1ch;
     padding: 1ch;
-    margin: 1ch;
+    margin-top: 2ch;
+    z-index: 100;
+}
+
+.scrollable {
+    overflow-y: auto;
+    max-height: 780px;
+}
+
+.scrollable .table {
+    overflow-y: auto;
+    max-height: 350px;
+    width: 90%;
+
+}
+
+.tableRow {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    color: var(--subcolor);
+    transition: ease-in-out 250ms;
+
+}
+
+    .tableRow:hover {
+        scale: 1.05;
+        filter: brightness(1.1), contrast(1.1);
+        cursor: pointer;
+    }
+
+    .tableRow:active {
+        scale: 0.9;
+        color: var(--maincolor);
+    }
+
+tr:nth-child(1n) {
+    border-bottom: 1ch dotted var(--subcolor);
+    padding-top: 1ch;
+    width: 90%;
 }
 
 
-#nearbyBtn {
-    opacity: 1;
-}
-
-#from, #to {
+#from,
+#to {
     color: var(--subcolor);
 }
 
@@ -107,44 +159,135 @@ main {
     opacity: 0;
     transform: scale(0.95);
     transition: transform 0.25s ease-in-out, opacity 0.25s ease-in-out;
-  }
-  
-  .transition-fade.visible {
+}
+
+.transition-fade.visible {
     opacity: 1;
     transform: scale(1);
-  }
+}
 
-  .select-dropdown {
+.select-wrapper {
+    display: flex;
+    justify-content: center;
+    transition: ease-in-out 250ms;
+
+}
+
+    .select-wrapper:hover {
+        scale: 1.05;
+        cursor: pointer;
+    }
+
+    .select-wrapper:active {
+        scale: 0.9;
+    }
+
+.select-dropdown {
     color: var(--inactive);
-  }
+    text-align: center;
+    max-width: 220px;
+    max-height: 500px;
+}
 
+.dropdown-content {
+    text-align: center;
+}
 
-#formBtn {
+.btn {
+    max-width: 220px;
+    margin: 1ch;
+}
+
+.activeImg {
+    background-image: url("../images/iguazu.jpg");
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    height: 65vh;
+    border-bottom-left-radius: 2ch;
+    border-bottom-right-radius: 2ch;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 #googleMap {
-    width: 40vw;
-    height: 40vh;
-    margin: 2rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1ch;
+    width: 90%;
+    height: 80%;
+    min-width: 270px;
+    min-height: 270px;
+    border-radius: 1ch;
 }
 
-@media screen and (max-width: 1300px) and (orientation: landscape) {
-    h1 {
+@media screen and (max-width: 1300px) {
+    .h1 {
         font-size: 2.5rem;
     }
-    h2 {
+
+    .h2 {
         font-size: 2rem;
+    }
+
+    .activeImg {
+        height: 65vh;
     }
 }
 
-@media screen and (max-width: 1030px) and (orientation: landscape) {
-    h1 {
+@media screen and (max-width: 1030px) {
+    .h1 {
+        font-size: 1.75rem;
+    }
+
+    .h2 {
         font-size: 1.5rem;
     }
-    h2 {
-        font-size: 1.2rem;
+
+    main {
+        height: 130vh;
     }
-    .mainSection {
+
+    .scrollable {
+        max-height: 520px;
+    }
+
+    .scrollable .table {
+        margin-top: 1ch;
+        border-radius: 1ch;
+
+    }
+
+    #mainSection {
         display: block;
     }
+
+    .activeImg {
+        height: 45vh;
+    }
+
+    .containerMd,
+    .containerLg {
+        width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 2ch;
+    }
+
+    .contMd1 {
+        margin-top: 2ch;
+    }
+
+    .tableRow {
+        text-align: center;
+        justify-content: center;
+    }
+
+    .select-dropdown {
+        max-height: 225px;
+    }
+
+
 }

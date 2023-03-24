@@ -4,6 +4,9 @@ let lastCoordinates // Trip last coordinates
 let globalMap
 let markers = [];
 const now = dayjs();
+
+
+
 // ~~~ Map Start ~~~ //
 
 var destinationUnorderedList = $('#timeSpentUl')
@@ -47,7 +50,7 @@ async function calcRoute(directionsService, directionsRenderer) {
   directionsService.route(request, async (result, status) => {
     if (status == google.maps.DirectionsStatus.OK) {
       const output = document.querySelector('#output')
-      output.innerHTML = "<div> From: " + document.getElementById('from').value + ".<br /> To: " + document.getElementById('to').value + ". <br /> Distance " + result.routes[0].legs[0].distance.text + ".<br /> Duration " + result.routes[0].legs[0].duration.text + ". </div>";
+      output.innerHTML = "<div> From: " + document.getElementById('from').value + ".<br /> To: " + document.getElementById('to').value + ". <br /> Distance " + result.routes[0].legs[0].distance.text + ". || Duration " + result.routes[0].legs[0].duration.text + ". </div>";
       
       directionsRenderer.setDirections(result);
       
@@ -55,78 +58,78 @@ async function calcRoute(directionsService, directionsRenderer) {
       endAddress = result.routes[0].legs[0].end_address;
       lastAddress = endAddress;
       try {
-        await geocode(); // Add await here
-        await getWeather(); // Add await here
-        time();
+        await geocode();
+        await getWeather(); 
+        await storeLocation();
+        await time();
+        swapForm();
       } catch (error) {
         alert(error);
       }
-      swapForm();
 
     } else {
       directionsRenderer.setDirections({routes: []});
       map.setCenter(center);
       output.innerHTML = "<p>Can't drive there mate.</p>"
     }
-var nextArrivalTime;
-  function time() {
-    var destinationListArray = [];
-    var destinationListItem = $('<li class="destinationLi transition-fade">');
-      var from = document.getElementById('from').value;
-      var to = document.getElementById('to').value;
-      var duration = result.routes[0].legs[0].duration.text;
-      var distance = result.routes[0].legs[0].distance.text;
-      var startTime;
-      var arrivalTime; // Initialize a variable to store the calculated arrival time
-      var currentTime = dayjs().format('h:mm A');
-      if (destinationListArray.length === 0) {
-          // Set the start time of the first list item as the current time
-          startTime = currentTime;
-      } else {
-        for (var i=0; i<destinationListArray.length; i++) {
 
-          var previous=destinationListArray[i-1];
-          var current=destinationListArray[i];
-          var next=destinationListArray[i+1];
-          
-          }
-          // Set the start time of the following list items as the arrival time of the last list item
-          
-      }
-      if (duration.length > 8) {
-        var timeArray = duration.split(" ");
-        console.log(timeArray);
-        var hours = parseInt(timeArray[0]);
-        var minutes = parseInt(timeArray[2]);
-        var hourMinutes = hours * 60;
-        minutes = hourMinutes + minutes;
-        var minutesAdded = dayjs().add(minutes, "minute").format("h:mm A");
-        var hoursAdded = dayjs().add(hours, "hour").format("h:mm A");
-        console.log(minutesAdded);
-        arrivalTime = minutesAdded;
-      } else {
-        var travelTime = parseInt(duration);
-        arrivalTime = dayjs().add(travelTime, "minute").format("h:mm A");
-      }
-      arrivalTimes.push(arrivalTime)
-      
-      // Set the current arrival time as the last arrival time for the next card
-      lastArrivalTime = arrivalTime;
-      console.log(lastArrivalTime);
-      if(arrivalTimes.length > 1){
-        startTime = arrivalTimes[arrivalTimes.length -2];
-      }
-      const formattedText = `
-      <p>From: ${from}<br />To: ${to}<br />Duration: ${duration} || Distance: ${distance}<br />Start: ${startTime} || Arrival: ${arrivalTime}<br />Weather<br />${weatherTemp}F || ${weatherDescr}</p>
-      `;
-      // destinationList.push(destinationUnorderedList);
-      destinationListItem.html(formattedText);
-      destinationListArray.push(destinationListItem);
-      destinationListItem.append('<button class="btn delete-item-btn blue">Remove</button>');
-      destinationUnorderedList.append(destinationListItem);
-      setTimeout(() => {
-        destinationListItem.addClass('visible mdOpacity');
-      }, 50);
+
+    var nextArrivalTime;
+    function time() {
+      var destinationListArray = [];
+      var destinationListItem = $('<li class="destinationLi transition-fade">');
+        var from = document.getElementById('from').value;
+        var to = document.getElementById('to').value;
+        var duration = result.routes[0].legs[0].duration.text;
+        var distance = result.routes[0].legs[0].distance.text;
+        var startTime;
+        var arrivalTime; // Initialize a variable to store the calculated arrival time
+        var currentTime = dayjs().format('h:mm A');
+        if (destinationListArray.length === 0) {
+            // Set the start time of the first list item as the current time
+            startTime = currentTime;
+        } else {
+          for (var i=0; i<destinationListArray.length; i++) {
+
+            // var previous=destinationListArray[i-1];
+            // var current=destinationListArray[i];
+            // var next=destinationListArray[i+1];
+            
+            }
+            // Set the start time of the following list items as the arrival time of the last list item
+            
+        }
+        if (duration.length > 8) {
+          var timeArray = duration.split(" ");
+          console.log(timeArray);
+          var hours = parseInt(timeArray[0]);
+          var minutes = parseInt(timeArray[2]);
+          var hourMinutes = hours * 60;
+          minutes = hourMinutes + minutes;
+          arrivalTime = dayjs().add(minutes, "minute").format("h:mm A");
+        } else {
+          var travelTime = parseInt(duration);
+          arrivalTime = dayjs().add(travelTime, "minute").format("h:mm A");
+        }
+        arrivalTimes.push(arrivalTime)
+        
+        // Set the current arrival time as the last arrival time for the next card
+        lastArrivalTime = arrivalTime;
+        console.log(arrivalTime);
+        if(arrivalTimes.length > 1){
+          startTime = arrivalTimes[arrivalTimes.length -2];
+        }
+        const formattedText = `
+        <p>From: ${from}<br />To: ${to}<br />Duration: ${duration} || Distance: ${distance}<br />Start: ${startTime} || Arrival: ${arrivalTime}<br />Weather<br />${weatherTemp}F || ${weatherDescr}</p>
+        `;
+        // destinationList.push(destinationUnorderedList);
+        destinationListItem.html(formattedText);
+        destinationListArray.push(destinationListItem);
+        destinationListItem.append('<button class="btn delete-item-btn blue">Remove</button>');
+        destinationUnorderedList.append(destinationListItem);
+        setTimeout(() => {
+          destinationListItem.addClass('visible mdOpacity');
+        }, 50);
     }
     
   });
@@ -160,12 +163,8 @@ function geocode() {
 
 // Swaps the location input forms on submit, called in directionsService //
 function swapForm() {
-  let origin = document.getElementById('from').value;
-  let destination = document.getElementById('to').value;
-  let temp = origin; // store the value of origin in a temporary variable
-  origin = destination; // overwrite the value of origin with the value of destination
-  destination = temp; // set the value of destination to the value of the temporary variable
-  document.getElementById('from').value = origin; // update the input fields with the new values
+  const lastAddress = localStorage.getItem('lastAddress'); // retrieve lastAddress from local storage
+  document.getElementById('from').value = lastAddress; // update the input fields with the new values
   document.getElementById('to').value = '';
 }
 
@@ -213,12 +212,13 @@ function callback(results, status) {
 // Nearby Search Function RESULTS
 function nearbyResults(place) {
   const table = document.getElementById("places");
+  const tbody = table.getElementsByTagName('tbody')[0];
+  const tr = table.getElementsByTagName('tr');
   const row = table.insertRow();
   // Starting here
   const [cell1, cell2, cell3] = [row.insertCell(0), row.insertCell(1), row.insertCell(2)];
   const { name, formatted_phone_number, rating, opening_hours, photos, formatted_address} = place;
   const photoUrl = photos ? photos[0].getUrl() : '';
-  console.log(place);
   // Ending here, I have no clue what I'm looking at
   // Edit, I figured it out <3
 
@@ -242,8 +242,11 @@ function nearbyResults(place) {
 
   row.addEventListener("click", function () {
     setDestination(place.formatted_address);
-
+    document.getElementById("pageTop").scrollIntoView({ behavior: "smooth" });
   });
+
+  $(tbody).addClass('scrollable table');
+  $(tr).addClass('tableRow');
 }
 
 // When row is clicked a new address is added to Destination
@@ -350,8 +353,7 @@ destinationUnorderedList.on('click', '.delete-item-btn', handleRemoveItem);
         $(".btn").addClass('w-50 blue hoverIntBtn');
         $(".form").addClass('formControl .center-align');
         $("#output").addClass('');
-        $(".recommendedTable").addClass('');
-        
+        $(".recommendedTable").addClass('lwOpacity');
         const options = document.querySelectorAll('#recommendOptions option');
 
         // RevL8
@@ -419,3 +421,15 @@ let weatherFeel;
 
 //Starts it all//
 window.onload = initMap();
+
+function storeLocation() {
+localStorage.setItem('lastCoordinates', JSON.stringify(lastCoordinates));
+localStorage.setItem('lastAddress', lastAddress);
+}
+
+const storedCoordinates = localStorage.getItem('lastCoordinates');
+const storedAddress = localStorage.getItem('lastAddress');
+
+// If the values exist in localStorage, set them to the variables
+usableCoordinates = JSON.parse(storedCoordinates);
+usableAddress = storedAddress;
