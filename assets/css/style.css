@@ -1,14 +1,13 @@
 :root {
-   --maincolor:white;
-   --subcolor:teal;
+   --maincolor:black;
+   --subcolor:white;
    --accentcolor:cyan;
    --trimcolor:blue; 
+   --inactive: rgba(200, 200, 200, 1);
 }
 
 body {
-    /* color: var(--maincolor); */
-    background-image: url("../images/iguazu.jpg");
-    background-size:100% 100%, contain;
+    color: var(--subcolor);
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
@@ -17,11 +16,16 @@ h2 {
 }
 
 main {
-    width:  90%;
-    max-width: 2560px;
+    width:  90vw;
     margin-left: auto;
     margin-right: auto;
     height: 100vh;
+    min-width: 320px;
+    max-width: 2560px;
+    background-image: url("../images/iguazu.jpg");
+    background-size:cover;
+    background-position: center;
+    border-radius: 1rem;
 }
 
 .mainSection {
@@ -32,8 +36,6 @@ main {
 
 .containerMd, .containerLg {
     background-color:none;
-    flex: content;
-    justify-content: center;
     text-align: center;
     padding: 0px 3px 0px 0px;
 }
@@ -52,14 +54,70 @@ main {
     margin-right: 1rem;
 }
 
+.hoverIntBtn {
+    transition: ease-in-out 150ms;
+}
+
+    .hoverIntBtn:hover {
+        scale: 1.05;
+        filter:brightness(1.1), contrast(1.1);
+        
+    }
+
+    .hoverIntBtn:active {
+        scale:0.9;
+    } 
+
 .travelFormBox {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .travelForm {
     display: flex;
-    margin: 1rem;
+    margin: 0rem;
 }
+
+.lwOpacity {
+    background-color: rgba(0, 0, 0, 0.45);
+    border-radius: 1ch;
+    padding: 1ch;
+    margin: 1ch;
+}
+
+.mdOpacity {
+    background-color: rgba(0, 0, 0, .6);
+    border-radius: 1ch;
+    padding: 1ch;
+    margin: 1ch;
+}
+
+
+#nearbyBtn {
+    opacity: 1;
+}
+
+#from, #to {
+    color: var(--subcolor);
+}
+
+.transition-fade {
+    opacity: 0;
+    transform: scale(0.95);
+    transition: transform 0.25s ease-in-out, opacity 0.25s ease-in-out;
+  }
+  
+  .transition-fade.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .select-dropdown {
+    color: var(--inactive);
+  }
+
 
 #formBtn {
 }
@@ -70,8 +128,23 @@ main {
     margin: 2rem;
 }
 
+@media screen and (max-width: 1300px) and (orientation: landscape) {
+    h1 {
+        font-size: 2.5rem;
+    }
+    h2 {
+        font-size: 2rem;
+    }
+}
 
-/* 
-#recommendedModal {
-    position: absolute;
-} */
+@media screen and (max-width: 1030px) and (orientation: landscape) {
+    h1 {
+        font-size: 1.5rem;
+    }
+    h2 {
+        font-size: 1.2rem;
+    }
+    .mainSection {
+        display: block;
+    }
+}
