@@ -20,18 +20,19 @@ function initMap() {
     fullScreenControl: false
   });
   globalMap = map
-
+  
   directionsRenderer.setMap(map);
-
+  
   // Button to update locations //
   document.getElementById("formBtn").addEventListener("click", function(event){
     event.preventDefault();
     calcRoute(directionsService, directionsRenderer);
   });
-
+  
 }
 
 
+var arrivalTimes = [];
 // Calculates and display travel distance and time to the output container and the timeSpentUl, fragile do not touch//
 function calcRoute(directionsService, directionsRenderer) {
   let selectedMode = document.getElementById("mode").value;
@@ -45,62 +46,82 @@ function calcRoute(directionsService, directionsRenderer) {
     if (status == google.maps.DirectionsStatus.OK) {
       const output = document.querySelector('#output')
       output.innerHTML = "<div> From: " + document.getElementById('from').value + ".<br /> To: " + document.getElementById('to').value + ". <br /> Driving Distance " + result.routes[0].legs[0].distance.text + ".<br /> Duration " + result.routes[0].legs[0].duration.text + ". </div>";
-
+      
       directionsRenderer.setDirections(result);
-
-
-      var destinationListItem = $(
-        '<li class="flex-row justify-space-between locationList align-center p-2 bg-light text-dark">'
-        );
-        var from = document.getElementById('from').value
-        var to = document.getElementById('to').value
+      time();
+      tripDuration = result.routes[0].legs[0].duration.text;
+      endAddress = result.routes[0].legs[0].end_address;
+      lastAddress = endAddress;
+      geocode();
+      swapForm();
+      
+    } else {
+      directionsRenderer.setDirections({routes: []});
+      map.setCenter(center);
+      output.innerHTML = "<p>Can't drive there mate.</p>"
+    }
+    var nextArrivalTime;
+    function time() {
+      var destinationListArray = [];
+      var destinationListItem = $('<li class="flex-row justify-space-between locationList align-center p-2 bg-light text-dark">');
+        var from = document.getElementById('from').value;
+        var to = document.getElementById('to').value;
         var duration = result.routes[0].legs[0].duration.text;
         var distance = result.routes[0].legs[0].distance.text;
-        var startTime = dayjs().format('h:mm A');
-        if(duration.length > 8){
-          var timeArray = duration.split(" ")
+        var startTime;
+        var arrivalTime; // Initialize a variable to store the calculated arrival time
+        var currentTime = dayjs().format('h:mm A');
+        if (destinationListArray.length === 0) {
+            // Set the start time of the first list item as the current time
+            startTime = currentTime;
+        } else {
+          for (var i=0; i<destinationListArray.length; i++) {
+
+            var previous=destinationListArray[i-1];
+            var current=destinationListArray[i];
+            var next=destinationListArray[i+1];
+            
+            }
+            // Set the start time of the following list items as the arrival time of the last list item
+            
+        }
+        if (duration.length > 8) {
+          var timeArray = duration.split(" ");
           console.log(timeArray);
           var hours = parseInt(timeArray[0]);
           var minutes = parseInt(timeArray[2]);
-          var hourMinutes = hours*60
-          minutes=hourMinutes+minutes
-          var minutesAdded = dayjs().add(minutes, "minute").format("h:mm A")
-          var hoursAdded = dayjs().add(hours, "hour").format("h:mm A")
+          var hourMinutes = hours * 60;
+          minutes = hourMinutes + minutes;
+          var minutesAdded = dayjs().add(minutes, "minute").format("h:mm A");
+          var hoursAdded = dayjs().add(hours, "hour").format("h:mm A");
           console.log(minutesAdded);
-          var arrivalTime = minutesAdded;
-        } else{
-          var travelTime = parseInt(duration)
-          var arrivalTime = dayjs().add(travelTime, "minute").format("h:mm A");
-
-        }
-        console.log(travelTime);
-        // var arrivalTime = durationcurrentTime.add(result.routes[0].legs[0].duration.val());
-console.log(result);
-// Format the list item text using HTML tags
-      const formattedText = `
-      <p>From: ${from}<br />To: ${to}<br />Duration: ${duration}<br />Distance: ${distance}<br />Current Time: ${startTime}<br />Arrival Time: ${arrivalTime}</p>`;
-
-// Set the formatted text as the destination list item's HTML content
-      destinationListItem.html(formattedText);
-
-        // add delete button to remove destination from list
-        destinationListItem.append(
-          '<button class="btn btn-danger btn-small delete-item-btn">Remove</button>'
-          );
-          destinationUnorderedList.append(destinationListItem);
-          tripDuration = result.routes[0].legs[0].duration.text;
-          endAddress = result.routes[0].legs[0].end_address;
-          lastAddress = endAddress;
-          geocode();
-          swapForm();
-
+          arrivalTime = minutesAdded;
         } else {
-          directionsRenderer.setDirections({routes: []});
-          map.setCenter(center);
-          output.innerHTML = "<p>Can't drive there mate.</p>"
+          var travelTime = parseInt(duration);
+          arrivalTime = dayjs().add(travelTime, "minute").format("h:mm A");
         }
-      });
+        arrivalTimes.push(arrivalTime)
+        
+        // Set the current arrival time as the last arrival time for the next card
+        lastArrivalTime = arrivalTime;
+        console.log(lastArrivalTime);
+        if(arrivalTimes.length > 1){
+          startTime = arrivalTimes[arrivalTimes.length -2];
         }
+        const formattedText = `
+        <p>From: ${from}<br />To: ${to}<br />Duration: ${duration}<br />Distance: ${distance}<br />Start Time: ${startTime}<br />Arrival Time: ${arrivalTime}</p>
+        `;
+        // destinationList.push(destinationUnorderedList);
+        destinationListItem.html(formattedText);
+        destinationListArray.push(destinationListItem);
+        console.log(destinationListArray)
+        destinationListItem.append('<button class="btn btn-danger btn-small delete-item-btn">Remove</button>');
+        destinationUnorderedList.append(destinationListItem);
+        console.log(arrivalTimes);
+    }
+    
+  });
+}
 
         //  Gets Geocode information //
 
