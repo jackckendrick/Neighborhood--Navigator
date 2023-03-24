@@ -217,8 +217,21 @@ document.addEventListener('DOMContentLoaded', function() {
         // use event delegation on the `destinationListEL` to listen for click on any element with a class of `delete-item-btn`
         destinationUnorderedList.on('click', '.delete-item-btn', handleRemoveItem);
 
+        // $(".containerMd").addClass('hoverable');
+        $(".containerLg").addClass('#82b1ff blue accent-1');
+        $(".containerLg").addClass('z-depth-5 hoverable');
+        $(".input-field").addClass('blue lighten-1 pulse');
 
+        const options = document.querySelectorAll('#recommendOptions option');
 
+        options.forEach((option) => {
+          option.textContent = option.textContent.toUpperCase();
+        });
+
+        // document.querySelectorAll('#departureCard').addClass('orange z-depth-6');
+
+        // + option.textContent.slice(1)
+        // .charAt(0)
         // ~~~ Map End ~~~ Recommended Start ~~~ Experimental //
 
 
