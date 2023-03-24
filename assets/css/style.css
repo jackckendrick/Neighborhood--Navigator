@@ -60,7 +60,7 @@ main {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-evenly;
-    width: 98%;
+    width: 90%;
     margin-left: auto;
     margin-right: auto;
 }
@@ -110,16 +110,25 @@ main {
     z-index: 100;
 }
 
-.scrollable {
+.scrollableTime {
+    position: relative;
     overflow-y: auto;
-    max-height: 780px;
+    height: 665px;
+    border-radius: 1ch;
 }
 
-.scrollable .table {
+.scrollableTable {
+    position: relative;
     overflow-y: auto;
-    max-height: 350px;
+    height:360px;
     width: 90%;
 
+}
+
+#recommendedModal {
+    position: relative;
+    top: 10px;
+    
 }
 
 .tableRow {
@@ -201,15 +210,20 @@ tr:nth-child(1n) {
 .activeImg {
     background-image: url("../images/iguazu.jpg");
     width: 90%;
+    max-width: 2560px;
     margin-left: auto;
     margin-right: auto;
-    height: 65vh;
+    height: 40vh;
     border-bottom-left-radius: 2ch;
     border-bottom-right-radius: 2ch;
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+}
+
+#output {
+    font-size: 80%;
 }
 
 #googleMap {
@@ -223,7 +237,7 @@ tr:nth-child(1n) {
     border-radius: 1ch;
 }
 
-@media screen and (max-width: 1300px) {
+@media screen and (max-width: 1530px) {
     .h1 {
         font-size: 2.5rem;
     }
@@ -233,8 +247,17 @@ tr:nth-child(1n) {
     }
 
     .activeImg {
-        height: 65vh;
+        height: 50vh;
     }
+
+    .scrollableTime {
+        height: 635px;
+    }
+
+    .scrollableTable {
+        height: 445px;
+    }
+
 }
 
 @media screen and (max-width: 1030px) {
@@ -247,16 +270,17 @@ tr:nth-child(1n) {
     }
 
     main {
-        height: 130vh;
+        height: 150vh;
     }
 
-    .scrollable {
-        max-height: 520px;
+    .scrollableTime{
+        height: 405px;
     }
 
-    .scrollable .table {
+    .scrollableTable {
+        height: 405px;
         margin-top: 1ch;
-        border-radius: 1ch;
+        border-radius: 1ch;        
 
     }
 

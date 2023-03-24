@@ -78,34 +78,31 @@ async function calcRoute(directionsService, directionsRenderer) {
     function time() {
       var destinationListArray = [];
       var destinationListItem = $('<li class="destinationLi transition-fade">');
-        var from = document.getElementById('from').value;
-        var to = document.getElementById('to').value;
-        var duration = result.routes[0].legs[0].duration.text;
-        var distance = result.routes[0].legs[0].distance.text;
-        var startTime;
-        var arrivalTime; // Initialize a variable to store the calculated arrival time
-        var currentTime = dayjs().format('h:mm A');
+      var from = document.getElementById('from').value;
+      var to = document.getElementById('to').value;
+      var duration = result.routes[0].legs[0].duration.text;
+      var distance = result.routes[0].legs[0].distance.text;
+      var startTime;
+      var arrivalTime;
+      var currentTime = dayjs().format('h:mm A');
+      
+      var timeArray = duration.split(" ");
+      var hours = parseInt(timeArray[0]);
+      var minutes = parseInt(timeArray[2]);
+      var hourMinutes = hours * 60;
+        minutes = hourMinutes + minutes;
+        
         if (destinationListArray.length === 0) {
             // Set the start time of the first list item as the current time
             startTime = currentTime;
         } else {
           for (var i=0; i<destinationListArray.length; i++) {
-
-            // var previous=destinationListArray[i-1];
-            // var current=destinationListArray[i];
-            // var next=destinationListArray[i+1];
             
             }
-            // Set the start time of the following list items as the arrival time of the last list item
             
         }
         if (duration.length > 8) {
-          var timeArray = duration.split(" ");
           console.log(timeArray);
-          var hours = parseInt(timeArray[0]);
-          var minutes = parseInt(timeArray[2]);
-          var hourMinutes = hours * 60;
-          minutes = hourMinutes + minutes;
           arrivalTime = dayjs().add(minutes, "minute").format("h:mm A");
         } else {
           var travelTime = parseInt(duration);
@@ -125,7 +122,7 @@ async function calcRoute(directionsService, directionsRenderer) {
         // destinationList.push(destinationUnorderedList);
         destinationListItem.html(formattedText);
         destinationListArray.push(destinationListItem);
-        destinationListItem.append('<button class="btn delete-item-btn blue">Remove</button>');
+        destinationListItem.append('<button class="btn delete-item-btn blue hoverIntBtn">Remove</button>');
         destinationUnorderedList.append(destinationListItem);
         setTimeout(() => {
           destinationListItem.addClass('visible mdOpacity');
@@ -245,7 +242,7 @@ function nearbyResults(place) {
     document.getElementById("pageTop").scrollIntoView({ behavior: "smooth" });
   });
 
-  $(tbody).addClass('scrollable table');
+  $(tbody).addClass('scrollableTable');
   $(tr).addClass('tableRow');
 }
 
