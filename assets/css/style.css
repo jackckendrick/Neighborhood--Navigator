@@ -6,7 +6,6 @@
 }
 
 body {
-   
     /* color: var(--maincolor); */
     background-image: url("../images/iguazu.jpg");
     background-size:100% 100%, contain;
