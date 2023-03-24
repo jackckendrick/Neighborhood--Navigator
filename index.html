@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>TravelTheWorldApp</title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!-- Booststrap -->
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <!-- Local CSS -->
     <link href="./assets/css/style.css" rel="stylesheet">
@@ -19,30 +19,31 @@
     <main>
         <section class="mainSection">
         <div class="containerMd">
-            <h2>Travel Distance</h2>
-            <p>Use me to find the distance between two places.</p>
+            <h2 class="yellow-text darken-6">Travel Distance</h2>
+            <p class="yellow-text darken-6">Use me to find the distance between two places.</p>
             <form class="travelFormBox ">
                 <div class="travelForm">
-                    <label for="from" class="icon"><i class="fa-sharp fa-solid fa-location-dot"></i></label>
-                    <div class="col-xs-4">
-                        <input type="text" id="from" placeholder="Origin" class="formControl">
+                    <label for="from" class="icon"><i class=" material-icons">location_on</i></label>
+                    <div class="col-xs-4 hoverable">
+                        <!-- <i class="fa-sharp fa-solid fa-location-dot"></i> -->
+                        <input type="text" id="from" placeholder="Origin" class="blue formControl">
                     </div>
                 </div>
                 <div class="travelForm ">
-                    <label for="to" class="icon"><i class="fa-sharp fa-solid fa-location-dot"></i></label>
-                    <div class="col-xs-4">
-                        <input type="text" id="to" placeholder="Destination" name="GoingTo" class="formControl">
+                    <label for="to" class="icon"><i class=" material-icons">location_on</i></label>
+                    <div class="col-xs-4 hoverable">
+                        <input type="text" id="to" placeholder="Destination" name="GoingTo" class="blue formControl">
                     </div>
                 </div>
                 <div class="travelForm">
-                    <label for="to" class="icon"><i class="fa-solid fa-clock"></i></label>
+                    <label for="to" class="icon"><i class=" material-icons">access_time</i></label>
                     <div class="input-field">
                         <select id="timeAssumed">
                           <option value="15">15 mins</option>
                           <option value="30">30 mins</option>
                           <option value="60">1 hr</option>
                         </select>
-                        <label for="timeAssumed">Time Assumed</label>
+                        <!-- <label for="timeAssumed">Time Assumed</label> -->
                     </div>
                     <div class="input-field">
                         <select id="mode">
@@ -51,13 +52,13 @@
                             <option value="BICYCLING">Cycling</option>
                             <option value="TRANSIT">Train</option>
                         </select>
-                        <label for="mode">Mode of Transport</label>
+                        <!-- <label for="mode">Mode of Transport</label> -->
                     </div>
                 </div>
-                    <button id="formBtn" class="btn w-50 blue waves-effect"><i class="fa-sharp fa-solid fa-diamond-turn-right"></i></button>                   
+                    <button id="formBtn" class="btn w-50 blue waves-effect"><i class="fa-sharp fa-solid fa-diamond-turn-right"></i></button>
             </form>
             <div class="recommendedCard">
-            <h2>Nearby</h2>
+            <h2 class="yellow-text darken-6">No plans?</h2>
             <div class="input-field">
             <select id="recommendOptions">
                 <option value="airport">Airport</option>
@@ -101,19 +102,21 @@
                 <option value="zoo">Zoo</option>
             </select>
             
-            <button class="btn-flat waves-effect orange btn-small" id="nearbyBtn"><i class="small material-icons">search</i></button>
+            <button class="btn-flat waves-effect yellow darken-6 btn-small" id="nearbyBtn"><i class="small material-icons">search</i></button>
+            
+            
 
             </div>
             </div>
         </div>
         <div class="containerLg">
-            <h1>Travel the World!</h1>
-            <p>Trip time calculator</p>
+            <h1 class="yellow-text darken-6" >Travel The World!</h1>
+            <p class="yellow-text darken-6" >Trip Time Calculator</p>
             <div id="googleMap"></div>
             <div id="output"></div>
         </div>
         <div class="containerMd">
-            <h2>Estimated Time Spent</h2>
+            <h2 class="yellow-text darken-6">Estimated Time Spent</h2>
             <div id="departureCard">
                 <p id="departTime"></p>
                 <p id="arrivalTime"></p>
@@ -122,7 +125,7 @@
                 <ul id="timeSpentUl"></ul>
         </div>
         <div class="containerMd">
-            <h2>Weather Conditions</h2>
+            <h2 class="yellow-text darken-6">Weather Conditions</h2>
             <table>
                 <th>
                     <tbody>
