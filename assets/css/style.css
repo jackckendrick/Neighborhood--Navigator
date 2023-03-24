@@ -7,7 +7,7 @@
 
 body {
    
-    color: var(--maincolor);
+    /* color: var(--maincolor); */
     background-image: url("../images/iguazu.jpg");
     background-size:100% 100%, contain;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
@@ -36,10 +36,12 @@ main {
     flex: content;
     justify-content: center;
     text-align: center;
+    padding: 0px 3px 0px 0px;
 }
 
 .containerMd {
     width: 1.1fr;
+    
 }
 
 .containerLg {
@@ -68,8 +70,9 @@ main {
     height: 40vh;
     margin: 2rem;
 }
+
+
 /* 
 #recommendedModal {
     position: absolute;
 } */
-
