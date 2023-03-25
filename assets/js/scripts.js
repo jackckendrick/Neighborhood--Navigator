@@ -4,6 +4,9 @@ let lastCoordinates // Trip last coordinates
 let globalMap
 let markers = [];
 const now = dayjs();
+
+
+
 // ~~~ Map Start ~~~ //
 
 var destinationUnorderedList = $('#timeSpentUl')
@@ -36,7 +39,7 @@ function initMap() {
 
 var arrivalTimes = [];
 // Calculates and display travel distance and time to the output container and the timeSpentUl, fragile do not touch//
-function calcRoute(directionsService, directionsRenderer) {
+async function calcRoute(directionsService, directionsRenderer) {
   let selectedMode = document.getElementById("mode").value;
   let request = {
     origin: document.getElementById('from').value,
@@ -44,28 +47,37 @@ function calcRoute(directionsService, directionsRenderer) {
     travelMode: google.maps.TravelMode[selectedMode],
     unitSystem: google.maps.UnitSystem.IMPERIAL
   }
-  directionsService.route(request, (result, status) => {
+  directionsService.route(request, async (result, status) => {
     if (status == google.maps.DirectionsStatus.OK) {
       const output = document.querySelector('#output')
-      output.innerHTML = "<div> From: " + document.getElementById('from').value + ".<br /> To: " + document.getElementById('to').value + ". <br /> Driving Distance " + result.routes[0].legs[0].distance.text + ".<br /> Duration " + result.routes[0].legs[0].duration.text + ". </div>";
+      output.innerHTML = "<div> From: " + document.getElementById('from').value + ".<br /> To: " + document.getElementById('to').value + ". <br /> Distance " + result.routes[0].legs[0].distance.text + ". || Duration " + result.routes[0].legs[0].duration.text + ". </div>";
       
       directionsRenderer.setDirections(result);
-      time();
+      
       tripDuration = result.routes[0].legs[0].duration.text;
       endAddress = result.routes[0].legs[0].end_address;
       lastAddress = endAddress;
-      geocode();
-      swapForm();
-      
+      try {
+        await geocode();
+        await getWeather(); 
+        await storeLocation();
+        await time();
+        swapForm();
+      } catch (error) {
+        alert(error);
+      }
+
     } else {
       directionsRenderer.setDirections({routes: []});
       map.setCenter(center);
       output.innerHTML = "<p>Can't drive there mate.</p>"
     }
+
+
     var nextArrivalTime;
     function time() {
       var destinationListArray = [];
-      var destinationListItem = $('<li class="flex-row justify-space-between locationList align-center p-2 bg-light text-dark">');
+      var destinationListItem = $('<li class="destinationLi transition-fade">');
         var from = document.getElementById('from').value;
         var to = document.getElementById('to').value;
         var duration = result.routes[0].legs[0].duration.text;
@@ -79,9 +91,9 @@ function calcRoute(directionsService, directionsRenderer) {
         } else {
           for (var i=0; i<destinationListArray.length; i++) {
 
-            var previous=destinationListArray[i-1];
-            var current=destinationListArray[i];
-            var next=destinationListArray[i+1];
+            // var previous=destinationListArray[i-1];
+            // var current=destinationListArray[i];
+            // var next=destinationListArray[i+1];
             
             }
             // Set the start time of the following list items as the arrival time of the last list item
@@ -94,10 +106,7 @@ function calcRoute(directionsService, directionsRenderer) {
           var minutes = parseInt(timeArray[2]);
           var hourMinutes = hours * 60;
           minutes = hourMinutes + minutes;
-          var minutesAdded = dayjs().add(minutes, "minute").format("h:mm A");
-          var hoursAdded = dayjs().add(hours, "hour").format("h:mm A");
-          console.log(minutesAdded);
-          arrivalTime = minutesAdded;
+          arrivalTime = dayjs().add(minutes, "minute").format("h:mm A");
         } else {
           var travelTime = parseInt(duration);
           arrivalTime = dayjs().add(travelTime, "minute").format("h:mm A");
@@ -106,20 +115,21 @@ function calcRoute(directionsService, directionsRenderer) {
         
         // Set the current arrival time as the last arrival time for the next card
         lastArrivalTime = arrivalTime;
-        console.log(lastArrivalTime);
+        console.log(arrivalTime);
         if(arrivalTimes.length > 1){
           startTime = arrivalTimes[arrivalTimes.length -2];
         }
         const formattedText = `
-        <p>From: ${from}<br />To: ${to}<br />Duration: ${duration}<br />Distance: ${distance}<br />Start Time: ${startTime}<br />Arrival Time: ${arrivalTime}</p>
+        <p>From: ${from}<br />To: ${to}<br />Duration: ${duration} || Distance: ${distance}<br />Start: ${startTime} || Arrival: ${arrivalTime}<br />Weather<br />${weatherTemp}F || ${weatherDescr}</p>
         `;
         // destinationList.push(destinationUnorderedList);
         destinationListItem.html(formattedText);
         destinationListArray.push(destinationListItem);
-        console.log(destinationListArray)
-        destinationListItem.append('<button class="btn btn-danger btn-small delete-item-btn">Remove</button>');
+        destinationListItem.append('<button class="btn delete-item-btn blue">Remove</button>');
         destinationUnorderedList.append(destinationListItem);
-        console.log(arrivalTimes);
+        setTimeout(() => {
+          destinationListItem.addClass('visible mdOpacity');
+        }, 50);
     }
     
   });
@@ -133,30 +143,28 @@ function calcRoute(directionsService, directionsRenderer) {
 
 function geocode() {
   geocoder = new google.maps.Geocoder();
-  geocoder.geocode({ 'address': lastAddress }, function (results, status) {
-    if (status == 'OK') {
 
-      let lng = results[0].geometry.location.lng();
-      let lat = results[0].geometry.location.lat();
-      lastCoordinates = {
-        lat: lat,
-        lng: lng
+  return new Promise((resolve, reject) => {
+    geocoder.geocode({ 'address': lastAddress }, function (results, status) {
+      if (status == 'OK') {
+        let lng = results[0].geometry.location.lng();
+        let lat = results[0].geometry.location.lat();
+        lastCoordinates = {
+          lat: lat,
+          lng: lng
+        };
+        resolve(lastCoordinates);
+      } else {
+        reject('Geocode was not successful for the following reason: ' + status);
       }
-
-    } else {
-      alert('Geocode was not successful for the following reason: ' + status);
-    }
+    });
   });
 }
 
 // Swaps the location input forms on submit, called in directionsService //
 function swapForm() {
-  let origin = document.getElementById('from').value;
-  let destination = document.getElementById('to').value;
-  let temp = origin; // store the value of origin in a temporary variable
-  origin = destination; // overwrite the value of origin with the value of destination
-  destination = temp; // set the value of destination to the value of the temporary variable
-  document.getElementById('from').value = origin; // update the input fields with the new values
+  const lastAddress = localStorage.getItem('lastAddress'); // retrieve lastAddress from local storage
+  document.getElementById('from').value = lastAddress; // update the input fields with the new values
   document.getElementById('to').value = '';
 }
 
@@ -204,12 +212,13 @@ function callback(results, status) {
 // Nearby Search Function RESULTS
 function nearbyResults(place) {
   const table = document.getElementById("places");
+  const tbody = table.getElementsByTagName('tbody')[0];
+  const tr = table.getElementsByTagName('tr');
   const row = table.insertRow();
   // Starting here
   const [cell1, cell2, cell3] = [row.insertCell(0), row.insertCell(1), row.insertCell(2)];
   const { name, formatted_phone_number, rating, opening_hours, photos, formatted_address} = place;
   const photoUrl = photos ? photos[0].getUrl() : '';
-  console.log(place);
   // Ending here, I have no clue what I'm looking at
   // Edit, I figured it out <3
 
@@ -233,8 +242,11 @@ function nearbyResults(place) {
 
   row.addEventListener("click", function () {
     setDestination(place.formatted_address);
-
+    document.getElementById("pageTop").scrollIntoView({ behavior: "smooth" });
   });
+
+  $(tbody).addClass('scrollable table');
+  $(tr).addClass('tableRow');
 }
 
 // When row is clicked a new address is added to Destination
@@ -318,17 +330,30 @@ const autocomplete2 = new google.maps.places.Autocomplete(input2, autocompleteOp
 function handleRemoveItem(event) {
   // convert button we pressed (`event.target`) to a jQuery DOM object
   var removeBtnClicked = $(event.target);
-  // get the parent `<li>` element from the button we pressed and remove it
-  removeBtnClicked.parent('li').remove();
+  // get the parent `<li>` element from the button we pressed
+  var listItem = removeBtnClicked.parent('li');
+  
+  // remove the 'visible' class from the listItem
+  listItem.removeClass('visible');
+  
+  // wait for the transition to complete, then remove the listItem
+  setTimeout(() => {
+    listItem.remove();
+  }, 250); // match the duration of the transition in CSS
 }
 // use event delegation on the `destinationListEL` to listen for click on any element with a class of `delete-item-btn`
 destinationUnorderedList.on('click', '.delete-item-btn', handleRemoveItem);
 
-        // $(".containerMd").addClass('hoverable');
-        $(".containerLg").addClass('#82b1ff blue accent-1');
-        $(".containerLg").addClass('z-depth-5 hoverable');
-        $(".input-field").addClass('blue lighten-1 pulse');
 
+
+// $(".containerMd").addClass('hoverable');
+        $(".containerLg").addClass('lwOpacity z-depth-3 hoverable');
+        // $(".containerLg").addClass('z-depth-5 hoverable');
+        $(".containerMd").addClass('lwOpacity z-depth-3 hoverable');
+        $(".btn").addClass('w-50 blue hoverIntBtn');
+        $(".form").addClass('formControl .center-align');
+        $("#output").addClass('');
+        $(".recommendedTable").addClass('lwOpacity');
         const options = document.querySelectorAll('#recommendOptions option');
 
         // RevL8
@@ -336,8 +361,75 @@ destinationUnorderedList.on('click', '.delete-item-btn', handleRemoveItem);
           option.textContent = option.textContent.toUpperCase();
         });
 
-        // ~~~ Map End ~~~ Recommended Start ~~~ Experimental //
+        $(document).ready(function(){
+          $('select').formSelect();
+        });
+        
+        document.addEventListener('DOMContentLoaded', function() {
+          var elems = document.querySelectorAll('.dropdown-trigger');
+          var options = {
+            hover: true
+          }
+          var instances = M.Dropdown.init(elems, options);
+        });
 
+        
+
+
+
+
+
+
+// ~~~ Map End ~~~ Recommended Start ~~~ Experimental //
+
+var inputValue = document.getElementById('to');
+var currentTemp = document.getElementById('temp');
+var feelsLike = document.getElementById('feelslike')
+var weatherDescription = document.getElementById('description')
+//  Gets Geocode information //
+
+function getWeather() {
+  var lat = lastCoordinates.lat;
+  var lng = lastCoordinates.lng;
+  var weatherApiUrl = 'https://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lng + '&appid=5c244caed3676cc031bf4ddf617d7c3d&units=imperial';
+
+  return new Promise((resolve, reject) => {
+    fetch(weatherApiUrl)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(data) {
+        resolve(data); // Call resolve() when the data is fetched successfully
+        console.log(data);
+        var tempValue = data.main.temp;
+        var feelsLikeValue = data.main.feels_like;
+        var descrValue = data.weather[0].description;
+        weatherTemp = tempValue;
+        weatherDescr = descrValue;
+        weatherFeel = feelsLikeValue;
+      })
+      .catch(error => {
+        console.error(error);
+        reject(error); // Call reject() inside the catch block
+      });
+  });
+}
+
+let weatherTemp;
+let weatherDescr;
+let weatherFeel;
 
 //Starts it all//
 window.onload = initMap();
+
+function storeLocation() {
+localStorage.setItem('lastCoordinates', JSON.stringify(lastCoordinates));
+localStorage.setItem('lastAddress', lastAddress);
+}
+
+const storedCoordinates = localStorage.getItem('lastCoordinates');
+const storedAddress = localStorage.getItem('lastAddress');
+
+// If the values exist in localStorage, set them to the variables
+usableCoordinates = JSON.parse(storedCoordinates);
+usableAddress = storedAddress;
