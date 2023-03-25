@@ -36,7 +36,7 @@ function initMap() {
   
 }
 
-
+// Cannot be moved
 var arrivalTimes = [];
 // Calculates and display travel distance and time to the output container and the timeSpentUl, fragile do not touch//
 async function calcRoute(directionsService, directionsRenderer) {
