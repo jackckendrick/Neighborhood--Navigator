@@ -13,8 +13,10 @@ var weatherDescription = document.getElementById('description')
 
     function getWeather(event) {
         event.preventDefault()
-
-        var geoCode = 'https://api.openweathermap.org/geo/1.0/direct?q='+inputValue.value+'&limit=1&appid=5c244caed3676cc031bf4ddf617d7c3d';
+        cityNameArr =        inputValue.value.split(",");
+        cityName = cityNameArr[cityNameArr.length-3];
+        console.log(cityName)
+        var geoCode = 'https://api.openweathermap.org/geo/1.0/direct?q='+encodeURI(cityName)+'&limit=1&appid=5c244caed3676cc031bf4ddf617d7c3d';
         fetch (geoCode)
         .then (function(response) {
             return response.json();
