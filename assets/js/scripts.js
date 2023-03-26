@@ -122,13 +122,21 @@ async function calcRoute(directionsService, directionsRenderer) {
           console.log(minutesAdded);
         }
         let total = 0
+        let totalSubtract = 0
         for (let i = 0; i < durations.length; i++) {
           total += durations[i];
         }
+
+        for (let i = 0; i < durations.length - 1; i++) {
+          totalSubtract += durations[i];
+        }
+
         if(durations.length>1){
           arrivalTime = dayjs().add(total, "minute").format("h:mm A")
+          startTime = dayjs().add(totalSubtract, "minute").format("h:mm A")
         }
         console.log(total);
+        console.log(totalSubtract)
 
         const formattedText = `
         <p>From: ${from}<br />To: ${to}<br />Duration: ${duration} || Distance: ${distance}<br />Start: ${startTime} || Arrival: ${arrivalTime}<br />Weather<br />${weatherTemp}F || ${weatherDescr}</p>
