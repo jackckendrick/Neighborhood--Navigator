@@ -14,7 +14,9 @@ body {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
-h2 {}
+h1, h2, h3 {
+    text-align: center;
+}
 
 main {
     width: 90vw;
@@ -65,9 +67,17 @@ main {
     flex-wrap: wrap;
     justify-content: space-evenly;
     width: 90%;
-    max-height: 40vh;
+    min-height: 300px;
     margin-left: auto;
     margin-right: auto;
+}
+
+.tableImg {
+    max-width: 225px;
+    max-height: 225px;
+    width: auto;
+    height: auto;
+    border-radius: 1ch;
 }
 
 .icon {
@@ -122,7 +132,7 @@ main {
     position: relative;
     overflow-y: auto;
     height: 80%;
-    max-height: 50vh;
+    max-height: 48vh;
     border-radius: 1ch;
 
 }
@@ -131,13 +141,15 @@ main {
     position: relative;
     overflow-y: auto;
     height: 40%;
-    max-height: 30vh;
+    min-height: 280px;
+    max-height: 400px;
     width: 90vh;
 
 }
 
 .destinationLi {
     border-radius: 1ch;
+    padding: 1ch;
     margin: 1ch;
 }
 
@@ -147,6 +159,7 @@ main {
 
 .tableRow {
     display: flex;
+    font-size: 1rem;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-evenly;
@@ -245,23 +258,28 @@ tr:nth-child(1n) {
 }
 
 #googleMap {
+    color: var(--maincolor);
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 1ch;
     width: 90%;
-    height: 80%;
+    height: 65%;
     min-width: 200px;
     min-height: 200px;
     border-radius: 1ch;
 }
 
 @media screen and (max-width: 1530px) {
-    .h1 {
+    h1 {
         font-size: 2.5rem;
     }
 
-    .h2 {
+    h2 {
         font-size: 2rem;
+    }
+
+    h3 {
+        font-size: 1.5rem;
     }
 
     .scrollableTable {
@@ -273,12 +291,16 @@ tr:nth-child(1n) {
 }
 
 @media screen and (max-width: 1030px) {
-    .h1 {
+    h1 {
         font-size: 1.75rem;
     }
 
-    .h2 {
+    h2 {
         font-size: 1.5rem;
+    }
+
+    h3 {
+        font-size: 1.25rem;
     }
 
     #mainSection {
@@ -301,12 +323,14 @@ tr:nth-child(1n) {
     }
 
     .tableRow {
+        font-size: 0.8rem;
         text-align: center;
         justify-content: center;
     }
 
     .select-dropdown {
         max-height: 225px;
+        
     }
 
 

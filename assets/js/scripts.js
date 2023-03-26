@@ -235,7 +235,7 @@ function nearbyResults(place) {
   `;
 
   // In cell3 adds an available photo
-  cell3.innerHTML = photos ? `<img width="300" height="300" src="${photoUrl}"/>` : '';
+  cell3.innerHTML = photos ? `<img class='tableImg' src="${photoUrl}"/>` : '';
 
   row.addEventListener("click", function () {
     setDestination(place.formatted_address);
