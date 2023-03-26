@@ -21,7 +21,7 @@ main {
     margin-left: auto;
     margin-right: auto;
     height:fit-content;
-    background-image: url("../images/iguazu.jpg");
+    background-image: url("../images/skyline\ 2.jpg");
     background-size: cover;
     background-position: center;
     border-top-left-radius: 2ch;
@@ -224,7 +224,7 @@ tr:nth-child(1n) {
 }
 
 .activeImg {
-    background-image: url("../images/iguazu.jpg");
+    background-image: url("../images/skyline\ 2.jpg");
     position: relative;
     width: 90vw;
     margin-left: auto;
