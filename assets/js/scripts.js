@@ -418,10 +418,52 @@ let weatherFeel;
 
 //Starts it all//
 window.onload = initMap();
+window.onload = setStoredData();
 
 function storeLocation() {
-localStorage.setItem('lastCoordinates', JSON.stringify(lastCoordinates));
-localStorage.setItem('lastAddress', lastAddress);
+  localStorage.setItem('lastCoordinates', JSON.stringify(lastCoordinates));
+  if (!lastAddress) {
+    lastAddress = lastCoordinates;
+    localStorage.setItem('lastAddress', JSON.stringify(lastCoordinates));
+    document.getElementById('from').value = `${lastAddress.lat},${lastAddress.lng}`;
+  } else {
+    localStorage.setItem('lastAddress', lastAddress);
+  }
+}
+
+function setStoredData() {
+  const storedCoordinates = JSON.parse(localStorage.getItem('lastCoordinates'));
+  const storedAddress = localStorage.getItem('lastAddress');
+
+  if (!storedCoordinates) {
+    locateMe();
+  } else {
+    lastCoordinates = storedCoordinates;
+  }
+
+  if (storedAddress) {
+    lastAddress = storedAddress;
+    document.getElementById('from').value = lastAddress;
+  }
+  
+  console.log(lastCoordinates);
+  console.log(lastAddress);
+}
+
+function locateMe() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else {
+    console.log("Geolocation is not supported by this browser.");
+  }
+}
+
+function showPosition(position) {
+  lastCoordinates = {
+    lat: position.coords.latitude,
+    lng: position.coords.longitude
+  };
+  storeLocation(); // Save the updated lastCoordinates to localStorage
 }
 
 const storedCoordinates = localStorage.getItem('lastCoordinates');
