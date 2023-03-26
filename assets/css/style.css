@@ -5,6 +5,8 @@
     --trimcolor: blue;
     --inactive: rgba(200, 200, 200, 1);
     scroll-behavior: smooth;
+    max-width: 2560px;
+    
 }
 
 body {
@@ -15,11 +17,10 @@ body {
 h2 {}
 
 main {
-    width: 90%;
+    width: 90vw;
     margin-left: auto;
     margin-right: auto;
-    height: 75vh;
-    max-width: 2560px;
+    height:fit-content;
     background-image: url("../images/iguazu.jpg");
     background-size: cover;
     background-position: center;
@@ -30,29 +31,32 @@ main {
 #mainSection {
     display: flex;
     flex-direction: row;
-    height: 100%;
+    height:fit-content;
     margin-top: 2ch;
     justify-content: center;
 }
 
 .containerMd,
 .containerLg {
+    padding: 1ch;
+    border-radius: 1ch;
+    margin-left: auto;
+    margin-right: auto;
+    margin: 2ch;
     background-color: none;
     text-align: center;
-    margin: 2ch;
 }
 
 .containerMd {
     width: 27%;
     max-height: 1440px;
-
+    margin-bottom: 2ch;
 
 }
 
 .containerLg {
     width: 46%;
     max-height: 1440px;
-    min-height: 500px;
 }
 
 .recommendedTable {
@@ -60,7 +64,8 @@ main {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-evenly;
-    width: 98%;
+    width: 90%;
+    max-height: 40vh;
     margin-left: auto;
     margin-right: auto;
 }
@@ -96,29 +101,47 @@ main {
 
 .lwOpacity {
     background-color: rgba(0, 0, 0, 0.45);
-    border-radius: 1ch;
-    padding: 1ch;
-    margin-top: 2ch;
-    z-index: 100;
 }
 
 .mdOpacity {
     background-color: rgba(0, 0, 0, .6);
+}
+
+
+
+.scrollableTime, .scrollableTable {
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.scrollableTime::-webkit-scrollbar, .scrollableTable::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}
+
+.scrollableTime {
+    position: relative;
+    overflow-y: auto;
+    height: 80%;
+    max-height: 50vh;
     border-radius: 1ch;
-    padding: 1ch;
-    margin-top: 2ch;
-    z-index: 100;
+
 }
 
-.scrollable {
+.scrollableTable {
+    position: relative;
     overflow-y: auto;
-    max-height: 780px;
+    height: 40%;
+    max-height: 30vh;
+    width: 90vh;
+
 }
 
-.scrollable .table {
-    overflow-y: auto;
-    max-height: 350px;
-    width: 90%;
+.destinationLi {
+    border-radius: 1ch;
+    margin: 1ch;
+}
+
+#recommendedModal {
 
 }
 
@@ -146,6 +169,8 @@ main {
 tr:nth-child(1n) {
     border-bottom: 1ch dotted var(--subcolor);
     padding-top: 1ch;
+    margin-left: auto;
+    margin-right: auto;
     width: 90%;
 }
 
@@ -200,16 +225,23 @@ tr:nth-child(1n) {
 
 .activeImg {
     background-image: url("../images/iguazu.jpg");
-    width: 90%;
+    position: relative;
+    width: 90vw;
     margin-left: auto;
     margin-right: auto;
-    height: 65vh;
+    height: fit-content;
     border-bottom-left-radius: 2ch;
     border-bottom-right-radius: 2ch;
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    transition: ease-in-out 250ms;
+
+}
+
+#output {
+    font-size: 80%;
 }
 
 #googleMap {
@@ -218,12 +250,12 @@ tr:nth-child(1n) {
     margin-bottom: 1ch;
     width: 90%;
     height: 80%;
-    min-width: 270px;
-    min-height: 270px;
+    min-width: 200px;
+    min-height: 200px;
     border-radius: 1ch;
 }
 
-@media screen and (max-width: 1300px) {
+@media screen and (max-width: 1530px) {
     .h1 {
         font-size: 2.5rem;
     }
@@ -232,9 +264,12 @@ tr:nth-child(1n) {
         font-size: 2rem;
     }
 
-    .activeImg {
-        height: 65vh;
+    .scrollableTable {
+        height: 90%;
+        margin-top: 1ch;
+        border-radius: 1ch;  
     }
+
 }
 
 @media screen and (max-width: 1030px) {
@@ -246,34 +281,19 @@ tr:nth-child(1n) {
         font-size: 1.5rem;
     }
 
-    main {
-        height: 130vh;
-    }
-
-    .scrollable {
-        max-height: 520px;
-    }
-
-    .scrollable .table {
-        margin-top: 1ch;
-        border-radius: 1ch;
-
-    }
-
     #mainSection {
         display: block;
+        
     }
 
-    .activeImg {
-        height: 45vh;
+    .containerMd, .containerLg {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
     }
 
-    .containerMd,
-    .containerLg {
-        width: 90%;
-        margin-left: auto;
-        margin-right: auto;
-        padding: 2ch;
+    .scrollableTime {
+        max-height: 30vh;
     }
 
     .contMd1 {
