@@ -18,7 +18,7 @@ const output = document.querySelector('#output')
 function initMap() {
   const map = new google.maps.Map(document.getElementById("googleMap"), {
     zoom: 4,
-    center: { lat: 40.116386, lng: -101.299591 },
+    center: {lat: 40.116386, lng: -101.299591},
     mapTypeId: google.maps.MapTypeId.ROADMAP,
     streetViewControl: false,
     mapTypeControl: false,
@@ -29,7 +29,7 @@ function initMap() {
   directionsRenderer.setMap(map);
 
   // Button to update locations //
-  document.getElementById("formBtn").addEventListener("click", function (event) {
+  document.getElementById("formBtn").addEventListener("click", function(event){
     event.preventDefault();
     calcRoute(directionsService, directionsRenderer);
   });
@@ -154,7 +154,7 @@ async function calcRoute(directionsService, directionsRenderer) {
   });
 }
 
-//  Gets Geocode information //
+        //  Gets Geocode information //
 
 
 
@@ -188,13 +188,13 @@ function swapForm() {
 }
 
 
-// Search Nearby Call //
+// Search Nearby //
 nearbyBtn = document.getElementById('nearbyBtn');
 nearbyBtn.addEventListener('click', nearbySearch);
 
-// Nearby Search Function
-function nearbySearch() {
-  var prevLocation = new google.maps.LatLng(lastCoordinates.lat, lastCoordinates.lng);
+
+function nearbySearch(){
+  var prevLocation = new google.maps.LatLng(lastCoordinates.lat, lastCoordinates.lng)
   let typeSelection = document.getElementById('recommendOptions').selectedOptions[0].value;
 
   var request = {
@@ -205,25 +205,20 @@ function nearbySearch() {
 
   service = new google.maps.places.PlacesService(globalMap);
   service.nearbySearch(request, callback);
+  searchNearbyPlaces();
+
+}
+
+function searchNearbyPlaces() {
+    // document.getElementById('places').innerHTML = ''
+    // Get the place details from the autocomplete object.
+  var place = autocomplete2.getPlace();
 }
 
 function callback(results, status) {
   if (status === google.maps.places.PlacesServiceStatus.OK) {
-    clearMarkers();
-
-    const table = document.getElementById("places");
-    while (table.rows.length > 0) {
-      table.deleteRow(0);
-    }
     for (var i = 0; i < results.length; i++) {
-      let place = results[i];
-
-      service.getDetails({ placeId: place.place_id, fields: ['name', 'rating', 'formatted_phone_number', 'opening_hours', 'photos', 'geometry', 'formatted_address'] }, (details, status) => {
-        if (status === google.maps.places.PlacesServiceStatus.OK) {
-          nearbyResults(details);
-          createMarker(details);
-        }
-      });
+      createMarker(results[i]);
     }
   }
 }
@@ -275,57 +270,20 @@ function setDestination(address) {
   calcRoute(directionsService, directionsRenderer);
 }
 
-// Creates Map Markers
 function createMarker(place) {
-  let placeInfo = place.name + '<br>'
-    + 'Phone: ' + (place.formatted_phone_number ? place.formatted_phone_number : 'Not available') + '<br>'
-    + 'Rating: ' + (place.rating ? place.rating : 'Not available') + '<br>'
-    + 'Status: ' + getPlaceStatus(place.opening_hours);
-
-  var marker = new google.maps.Marker({
-    position: place.geometry.location,
-    map: globalMap,
-    title: place.name
-  });
-
-  var infoWindow = new google.maps.InfoWindow({
-    content: placeInfo
-  });
-
-  bindInfoWindow(marker, globalMap, infoWindow, placeInfo);
-  marker.setMap(globalMap);
-
-  markers.push(marker);
-}
-
-// Clears Map Markers
-function clearMarkers() {
-  for (let i = 0; i < markers.length; i++) {
-    markers[i].setMap(null);
+  var table = document.getElementById("places");
+  var row = table.insertRow();
+  var cell1 = row.insertCell(0);
+  cell1.innerHTML = place.name;
+  if (!place.photos) {
+    return;
   }
-  markers = [];
+  let photoUrl = place.photos[0].getUrl();
+  let cell2 = row.insertCell(1);
+  cell2.innerHTML = `<img width="300" height="300" src="${photoUrl}"/>;`;
 }
 
-// Opens Map Markers on Click
-function bindInfoWindow(marker, globalMap, infoWindow, html) {
-  marker.addListener('click', function () {
-    infoWindow.setContent(html);
-    infoWindow.open(globalMap, this);
-  });
-}
-
-// Checks for place Open Status
-function getPlaceStatus(opening_hours) {
-  if (!opening_hours) {
-    return 'Not available';
-  }
-  if (opening_hours.periods && opening_hours.periods.length === 1 && opening_hours.periods[0].open && !opening_hours.periods[0].close) {
-    return 'Open';
-  }
-  return opening_hours.isOpen() ? 'Open' : 'Closed';
-}
-
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
   var elems = document.querySelectorAll('select');
   var instances = M.FormSelect.init(elems);
 });
@@ -333,17 +291,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 // Auto Fill //
-const input1 = document.getElementById('from');
-const input2 = document.getElementById('to');
-const autocompleteOptions = {
-  fields: ["formatted_address", "geometry", "name"],
-  strictBounds: false,
-  types: ["geocode", "establishment"]
-}
+        const input1 = document.getElementById('from');
+        const input2 = document.getElementById('to');
+        const autocompleteOptions = {
+          fields: ["formatted_address", "geometry", "name"],
+          strictBounds: false,
+          types: ["geocode", "establishment" ]
+        }
 
 
-const autocomplete1 = new google.maps.places.Autocomplete(input1, autocompleteOptions);
-const autocomplete2 = new google.maps.places.Autocomplete(input2, autocompleteOptions);
+        const autocomplete1 = new google.maps.places.Autocomplete(input1, autocompleteOptions);
+        const autocomplete2 = new google.maps.places.Autocomplete(input2, autocompleteOptions);
 
 //This function serves to remove a list item from the unordered list
 function handleRemoveItem(event) {
