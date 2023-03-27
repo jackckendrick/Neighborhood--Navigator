@@ -25,15 +25,15 @@ function initMap() {
     fullScreenControl: false
   });
   globalMap = map
-  
+
   directionsRenderer.setMap(map);
-  
+
   // Button to update locations //
   document.getElementById("formBtn").addEventListener("click", function (event) {
     event.preventDefault();
     calcRoute(directionsService, directionsRenderer);
   });
-  
+
 }
 
 // Cannot be moved
@@ -51,15 +51,15 @@ async function calcRoute(directionsService, directionsRenderer) {
     if (status == google.maps.DirectionsStatus.OK) {
       const output = document.querySelector('#output')
       output.innerHTML = "<div> From: " + document.getElementById('from').value + ".<br /> To: " + document.getElementById('to').value + ". <br /> Distance " + result.routes[0].legs[0].distance.text + ". || Duration " + result.routes[0].legs[0].duration.text + ". </div>";
-      
+
       directionsRenderer.setDirections(result);
-      
+
       tripDuration = result.routes[0].legs[0].duration.text;
       endAddress = result.routes[0].legs[0].end_address;
       lastAddress = endAddress;
       try {
         await geocode();
-        await getWeather(); 
+        await getWeather();
         await storeLocation();
         await time();
         swapForm();
@@ -68,7 +68,7 @@ async function calcRoute(directionsService, directionsRenderer) {
       }
 
     } else {
-      directionsRenderer.setDirections({routes: []});
+      directionsRenderer.setDirections({ routes: [] });
       map.setCenter(center);
       output.innerHTML = "<p>Can't drive there mate.</p>"
     }
@@ -85,50 +85,50 @@ async function calcRoute(directionsService, directionsRenderer) {
       var startTime;
       var arrivalTime;
       var currentTime = dayjs().format('h:mm A');
-      
+
       var timeArray = duration.split(" ");
       var hours = parseInt(timeArray[0]);
       var minutes = parseInt(timeArray[2]);
       var hourMinutes = hours * 60;
-        minutes = hourMinutes + minutes;
-        
-        if (destinationListArray.length === 0) {
-            // Set the start time of the first list item as the current time
-            startTime = currentTime;
-        } else {
-          for (var i=0; i<destinationListArray.length; i++) {
-            
-            }
-            
+      minutes = hourMinutes + minutes;
+
+      if (destinationListArray.length === 0) {
+        // Set the start time of the first list item as the current time
+        startTime = currentTime;
+      } else {
+        for (var i = 0; i < destinationListArray.length; i++) {
+
         }
-        if (duration.length > 8) {
-          console.log(timeArray);
-          arrivalTime = dayjs().add(minutes, "minute").format("h:mm A");
-        } else {
-          var travelTime = parseInt(duration);
-          arrivalTime = dayjs().add(travelTime, "minute").format("h:mm A");
-        }
-        arrivalTimes.push(arrivalTime)
-        
-        // Set the current arrival time as the last arrival time for the next card
-        lastArrivalTime = arrivalTime;
-        console.log(arrivalTime);
-        if(arrivalTimes.length > 1){
-          startTime = arrivalTimes[arrivalTimes.length -2];
-        }
-        const formattedText = `
+
+      }
+      if (duration.length > 8) {
+        console.log(timeArray);
+        arrivalTime = dayjs().add(minutes, "minute").format("h:mm A");
+      } else {
+        var travelTime = parseInt(duration);
+        arrivalTime = dayjs().add(travelTime, "minute").format("h:mm A");
+      }
+      arrivalTimes.push(arrivalTime)
+
+      // Set the current arrival time as the last arrival time for the next card
+      lastArrivalTime = arrivalTime;
+      console.log(arrivalTime);
+      if (arrivalTimes.length > 1) {
+        startTime = arrivalTimes[arrivalTimes.length - 2];
+      }
+      const formattedText = `
         <p>From: ${from}<br />To: ${to}<br />Duration: ${duration} || Distance: ${distance}<br />Start: ${startTime} || Arrival: ${arrivalTime}<br />Weather<br />${weatherTemp}F || ${weatherDescr}</p>
         `;
-        // destinationList.push(destinationUnorderedList);
-        destinationListItem.html(formattedText);
-        destinationListArray.push(destinationListItem);
-        destinationListItem.append('<button class="btn delete-item-btn blue hoverIntBtn">Remove</button>');
-        destinationUnorderedList.append(destinationListItem);
-        setTimeout(() => {
-          destinationListItem.addClass('visible mdOpacity');
-        }, 50);
+      // destinationList.push(destinationUnorderedList);
+      destinationListItem.html(formattedText);
+      destinationListArray.push(destinationListItem);
+      destinationListItem.append('<button class="btn delete-item-btn blue hoverIntBtn">Remove</button>');
+      destinationUnorderedList.append(destinationListItem);
+      setTimeout(() => {
+        destinationListItem.addClass('visible mdOpacity');
+      }, 50);
     }
-    
+
   });
 }
 
@@ -214,7 +214,7 @@ function nearbyResults(place) {
   const row = table.insertRow();
   // Starting here
   const [cell1, cell2, cell3] = [row.insertCell(0), row.insertCell(1), row.insertCell(2)];
-  const { name, formatted_phone_number, rating, opening_hours, photos, formatted_address} = place;
+  const { name, formatted_phone_number, rating, opening_hours, photos, formatted_address } = place;
   const photoUrl = photos ? photos[0].getUrl() : '';
   // Ending here, I have no clue what I'm looking at
   // Edit, I figured it out <3
@@ -329,10 +329,10 @@ function handleRemoveItem(event) {
   var removeBtnClicked = $(event.target);
   // get the parent `<li>` element from the button we pressed
   var listItem = removeBtnClicked.parent('li');
-  
+
   // remove the 'visible' class from the listItem
   listItem.removeClass('visible');
-  
+
   // wait for the transition to complete, then remove the listItem
   setTimeout(() => {
     listItem.remove();
@@ -343,48 +343,37 @@ destinationUnorderedList.on('click', '.delete-item-btn', handleRemoveItem);
 
 
 
-// $(".containerMd").addClass('hoverable');
-        $(".containerLg").addClass('lwOpacity z-depth-3 hoverable');
-        // $(".containerLg").addClass('z-depth-5 hoverable');
-        $(".containerMd").addClass('lwOpacity z-depth-3 hoverable');
-        $(".btn").addClass('w-50 blue hoverIntBtn');
-        $(".form").addClass('formControl .center-align');
-        $("#output").addClass('');
-        $(".recommendedTable").addClass('lwOpacity');
-        const options = document.querySelectorAll('#recommendOptions option');
 
-        // RevL8
-        options.forEach((option) => {
-          option.textContent = option.textContent.toUpperCase();
-        });
-
-        $(document).ready(function(){
-          $('select').formSelect();
-        });
-        
-        document.addEventListener('DOMContentLoaded', function() {
-          var elems = document.querySelectorAll('.dropdown-trigger');
-          var options = {
-            hover: true
-          }
-          var instances = M.Dropdown.init(elems, options);
-        });
-
-        
+$(".containerLg").addClass('lwOpacity z-depth-3 hoverable');
+$(".containerMd").addClass('lwOpacity z-depth-3 hoverable');
+$(".btn").addClass('w-50 blue hoverIntBtn');
+$(".form").addClass('formControl .center-align');
+$("#output").addClass('');
+$(".recommendedTable").addClass('lwOpacity');
+const options = document.querySelectorAll('#recommendOptions option');
+options.forEach((option) => {
+  option.textContent = option.textContent.toUpperCase();
+});
 
 
+$(document).ready(function () {
+  $('select').formSelect();
+});
 
-
-
-
-// ~~~ Map End ~~~ Recommended Start ~~~ Experimental //
+document.addEventListener('DOMContentLoaded', function () {
+  var elems = document.querySelectorAll('.dropdown-trigger');
+  var options = {
+    hover: true
+  }
+  var instances = M.Dropdown.init(elems, options);
+});
 
 var inputValue = document.getElementById('to');
 var currentTemp = document.getElementById('temp');
 var feelsLike = document.getElementById('feelslike')
 var weatherDescription = document.getElementById('description')
-//  Gets Geocode information //
 
+// Weather API implimentation
 function getWeather() {
   var lat = lastCoordinates.lat;
   var lng = lastCoordinates.lng;
@@ -392,10 +381,10 @@ function getWeather() {
 
   return new Promise((resolve, reject) => {
     fetch(weatherApiUrl)
-      .then(function(response) {
+      .then(function (response) {
         return response.json();
       })
-      .then(function(data) {
+      .then(function (data) {
         resolve(data); // Call resolve() when the data is fetched successfully
         console.log(data);
         var tempValue = data.main.temp;
@@ -420,6 +409,7 @@ let weatherFeel;
 window.onload = initMap();
 window.onload = setStoredData();
 
+// Locally store location information
 function storeLocation() {
   localStorage.setItem('lastCoordinates', JSON.stringify(lastCoordinates));
   if (!lastAddress) {
@@ -431,6 +421,7 @@ function storeLocation() {
   }
 }
 
+// Locate self with checks
 function setStoredData() {
   const storedCoordinates = JSON.parse(localStorage.getItem('lastCoordinates'));
   const storedAddress = localStorage.getItem('lastAddress');
@@ -445,11 +436,15 @@ function setStoredData() {
     lastAddress = storedAddress;
     document.getElementById('from').value = lastAddress;
   }
-  
+
   console.log(lastCoordinates);
   console.log(lastAddress);
 }
 
+// Locate self Button
+document.getElementById('locateBtn').addEventListener("click", setStoredData);
+
+// Locate self function
 function locateMe() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(showPosition);
@@ -472,3 +467,10 @@ const storedAddress = localStorage.getItem('lastAddress');
 // If the values exist in localStorage, set them to the variables
 usableCoordinates = JSON.parse(storedCoordinates);
 usableAddress = storedAddress;
+
+// Tool Tip ini
+document.addEventListener('DOMContentLoaded', function () {
+  var elems = document.querySelectorAll('.tooltipped');
+  var instances = M.Tooltip.init(elems, options);
+});
+

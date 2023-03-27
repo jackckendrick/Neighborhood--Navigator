@@ -20,6 +20,7 @@ h1, h2, h3 {
 
 main {
     width: 90vw;
+    padding-bottom: 1ch;
     margin-left: auto;
     margin-right: auto;
     height:fit-content;
@@ -154,6 +155,9 @@ main {
 }
 
 #recommendedModal {
+    margin-top: 1ch;
+    padding-top: 1.5ch;
+    padding-bottom: 1ch;
 
 }
 
@@ -224,7 +228,8 @@ tr:nth-child(1n) {
     color: var(--inactive);
     text-align: center;
     max-width: 220px;
-    max-height: 500px;
+    max-height: 150px;
+    z-index: 5;
 }
 
 .dropdown-content {
