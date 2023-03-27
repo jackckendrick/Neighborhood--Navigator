@@ -38,6 +38,7 @@ function initMap() {
 
 // Cannot be moved
 var arrivalTimes = [];
+var durations = [];
 // Calculates and display travel distance and time to the output container and the timeSpentUl, fragile do not touch//
 async function calcRoute(directionsService, directionsRenderer) {
   let selectedMode = document.getElementById("mode").value;
@@ -85,50 +86,71 @@ async function calcRoute(directionsService, directionsRenderer) {
       var startTime;
       var arrivalTime;
       var currentTime = dayjs().format('h:mm A');
-
+      
       var timeArray = duration.split(" ");
       var hours = parseInt(timeArray[0]);
       var minutes = parseInt(timeArray[2]);
       var hourMinutes = hours * 60;
-      minutes = hourMinutes + minutes;
+        minutes = hourMinutes + minutes;
+        
+        if (destinationListArray.length === 0) {
+            // Set the start time of the first list item as the current time
+            startTime = currentTime;
+        } else {
+          for (var i=0; i<destinationListArray.length; i++) {
+            
+            }
+            
+        }
+        if (duration.length > 8) {
+          console.log(timeArray);
+          arrivalTime = dayjs().add(minutes, "minute").format("h:mm A");
+        } else {
+          var travelTime = parseInt(duration);
+          arrivalTime = dayjs().add(travelTime, "minute").format("h:mm A");
+        }
+        arrivalTimes.push(arrivalTime)
+        durations.push(parseInt(duration));
+        console.log(durations);
 
-      if (destinationListArray.length === 0) {
-        // Set the start time of the first list item as the current time
-        startTime = currentTime;
-      } else {
-        for (var i = 0; i < destinationListArray.length; i++) {
-
+        // Set the current arrival time as the last arrival time for the next card
+        lastArrivalTime = arrivalTime;
+        console.log(arrivalTime);
+        if(arrivalTimes.length > 1){
+          startTime = arrivalTimes[arrivalTimes.length -2];
+          minutesAdded = dayjs([arrivalTimes.length -2].value).add(minutes, "minute").format("h:mm A")
+          console.log(minutesAdded);
+        }
+        let total = 0
+        let totalSubtract = 0
+        for (let i = 0; i < durations.length; i++) {
+          total += durations[i];
         }
 
-      }
-      if (duration.length > 8) {
-        console.log(timeArray);
-        arrivalTime = dayjs().add(minutes, "minute").format("h:mm A");
-      } else {
-        var travelTime = parseInt(duration);
-        arrivalTime = dayjs().add(travelTime, "minute").format("h:mm A");
-      }
-      arrivalTimes.push(arrivalTime)
+        for (let i = 0; i < durations.length - 1; i++) {
+          totalSubtract += durations[i];
+        }
 
-      // Set the current arrival time as the last arrival time for the next card
-      lastArrivalTime = arrivalTime;
-      console.log(arrivalTime);
-      if (arrivalTimes.length > 1) {
-        startTime = arrivalTimes[arrivalTimes.length - 2];
-      }
-      const formattedText = `
+        if(durations.length>1){
+          arrivalTime = dayjs().add(total, "minute").format("h:mm A")
+          startTime = dayjs().add(totalSubtract, "minute").format("h:mm A")
+        }
+        console.log(total);
+        console.log(totalSubtract)
+
+        const formattedText = `
         <p>From: ${from}<br />To: ${to}<br />Duration: ${duration} || Distance: ${distance}<br />Start: ${startTime} || Arrival: ${arrivalTime}<br />Weather<br />${weatherTemp}F || ${weatherDescr}</p>
         `;
-      // destinationList.push(destinationUnorderedList);
-      destinationListItem.html(formattedText);
-      destinationListArray.push(destinationListItem);
-      destinationListItem.append('<button class="btn delete-item-btn blue hoverIntBtn">Remove</button>');
-      destinationUnorderedList.append(destinationListItem);
-      setTimeout(() => {
-        destinationListItem.addClass('visible mdOpacity');
-      }, 50);
+        // destinationList.push(destinationUnorderedList);
+        destinationListItem.html(formattedText);
+        destinationListArray.push(destinationListItem);
+        destinationListItem.append('<button class="btn delete-item-btn blue hoverIntBtn">Remove</button>');
+        destinationUnorderedList.append(destinationListItem);
+        setTimeout(() => {
+          destinationListItem.addClass('visible mdOpacity');
+        }, 50);
     }
-
+    
   });
 }
 
