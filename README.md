@@ -12,5 +12,5 @@ users can also use the mangifying glass icon to find suggested destinations base
 the area they are interested in traveling to.
 
 URL
-https://github.com/MogleyBear06/CitySlicker.git
+https://mogleybear06.github.io/CitySlicker/
 
