@@ -19,11 +19,10 @@
     <link href="./assets/css/style.css" rel="stylesheet">
 </head>
 <body>
-    <div id="pageTop"></div>
-    <main class=''>
+        <main class=''>
         <section id="mainSection" class="mainSection">
         <div class="containerMd contMd1">
-            <p class="h2">Travel Distance</p>
+            <h2>Travel Distance</h2>
             <p>Use me to find the distance between two places.</p>
             <form class="travelFormBox">
                 <div class="travelForm">
@@ -52,7 +51,7 @@
                     <button id="formBtn" class="btn"><i class="fa-sharp fa-solid fa-diamond-turn-right"></i></button>
             </form>
             <div class="recommendedCard">
-            <p class="h2">Guide Me!</p>
+            <h2>Guide Me!</h2>
             <div class="input-field">
             <select id="recommendOptions" class="">
                 <option value="airport">Airport</option>
@@ -96,21 +95,24 @@
                 <option value="zoo">Zoo</option>
             </select>
             
-            <button class="btn" id="nearbyBtn"><i class="small material-icons">search</i></button>
+            <button class="btn tooltipped" data-tooltip="Click me to search nearby location." id="nearbyBtn"><i class="small material-icons">search</i></button>
+            <button class="btn tooltipped" data-tooltip="Click me to set current location." id="locateBtn"><i class="small material-icons">gps_fixed</i></button>
             
             
 
             </div>
             </div>
         </div>
+        <div id="pageTop"></div>
         <div class="containerLg">
-            <p class="h1">City Slicker</p>
+            <h1>City Slicker</h1>
             <p>We'll get you around!</p>
+            <p id="locationInfo"></p>
             <div id="googleMap"></div>
             <div id="output"></div>
         </div>
         <div class="containerMd">
-            <p class="h2">Estimated Time Spent</p>
+            <h2>Estimated Time Spent</h2>
             <div id="departureCard">
                 <ul id="timeSpentUl" class="scrollableTime"></ul>
             </div>
@@ -145,7 +147,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <!-- Local Script -->
     <script src="./assets/js/scripts.js"></script>
+    <!-- Materialize CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!-- Materialize Local -->
     <script type="text/javascript" src="./assets/js/materialize.min.js"></script>
 </body>
 </html>
