@@ -1,7 +1,7 @@
-# City Slicker
+# Neighborhood Navigator
 
 ## App Description
-City Slicker is an intercity travel app enabling users to plug in current 
+Neighborhood Navigator is an intercity travel app enabling users to plug in current 
 location information and destination location information to get a 
 visualization of the route via map, the distance between locations, the 
 amount of time it takes to travel as well as the current weather of the 
@@ -18,6 +18,4 @@ Programming- JavaScript and JQuery
 Generative Advesarial Network (GAN)- OpenAI DALL-E
 
 URL
-https://mogleybear06.github.io/CitySlicker/
 
-![mogleybear06 github io_CitySlicker_ (1)](https://user-images.githubusercontent.com/123154529/228110523-106cf272-4543-4f10-8a11-4ebd86bcdd64.png)
