@@ -11,7 +11,7 @@ an additional metric which is the total amount of time spent traveling. Addition
 users can also use the mangifying glass icon to find suggested destinations based on 
 the area they are interested in traveling to.
 
-##Tech Stack
+## Tech Stack
 API's- Google Maps and OpenWeather
 CSS- Materialize
 Programming- JavaScript and JQuery
